@@ -1,0 +1,146 @@
+// Jenkins Declarative Pipeline — ParaBank Capstone Playwright Framework
+//
+// WINDOWS Jenkins agent — all steps use `bat` (not `sh`).
+// Browser routing (matches playwright.config.ts projects):
+//   UI + E2E   → Chromium, Firefox, WebKit  (3 projects)
+//   API + Perf → Chromium only              (chromium-api-perf project)
+//
+// returnStatus: true on test stages so known-defect soft-assertions
+// (DEF-001..006) don't fail the build.
+
+pipeline {
+    agent any
+
+    options {
+        timeout(time: 90, unit: 'MINUTES')
+        timestamps()
+        buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '14'))
+        disableConcurrentBuilds()
+    }
+
+    environment {
+        CI                = 'true'
+        PW_WORKERS        = '2'
+        NODE_OPTIONS      = '--max-old-space-size=4096'
+        PARABANK_BASE_URL = 'https://parabank.parasoft.com'
+        LOG_LEVEL         = 'info'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Setup - Dependencies and Browsers') {
+            steps {
+                bat 'node --version'
+                bat 'npm --version'
+                bat 'npm ci'
+                bat 'npx playwright install --with-deps chromium firefox webkit'
+            }
+        }
+
+        stage('Type Check') {
+            steps {
+                bat 'npx tsc --noEmit'
+            }
+        }
+
+        stage('UI Tests - Cross Browser') {
+            steps {
+                script {
+                    def result = bat(
+                        script: 'npx playwright test tests/ui',
+                        returnStatus: true
+                    )
+                    echo "UI Tests exit code: ${result}"
+                }
+            }
+        }
+
+        stage('API Tests - Chromium Only') {
+            steps {
+                script {
+                    def result = bat(
+                        script: 'npx playwright test tests/api',
+                        returnStatus: true
+                    )
+                    echo "API Tests exit code: ${result}"
+                }
+            }
+        }
+
+        stage('E2E Hybrid Tests - Cross Browser') {
+            steps {
+                script {
+                    def result = bat(
+                        script: 'npx playwright test tests/e2e',
+                        returnStatus: true
+                    )
+                    echo "E2E Tests exit code: ${result}"
+                }
+            }
+        }
+
+        stage('Performance Lite - Chromium Only') {
+            steps {
+                script {
+                    def result = bat(
+                        script: 'npx playwright test tests/performance-lite',
+                        returnStatus: true
+                    )
+                    echo "Performance Tests exit code: ${result}"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Generate Allure static report from results
+            script {
+                def allureResult = bat(
+                    script: 'npx allure generate test-results/allure-results -o test-results/allure-report --clean',
+                    returnStatus: true
+                )
+                if (allureResult != 0) {
+                    echo "Allure report generation exited with code ${allureResult} — results may be empty."
+                }
+            }
+
+            // Allure Jenkins plugin (if installed) — graceful fallback
+            script {
+                try {
+                    allure([
+                        includeProperties: false,
+                        jdk              : '',
+                        results          : [[path: 'test-results/allure-results']]
+                    ])
+                } catch (err) {
+                    echo "Allure plugin not installed — reports available in Build Artifacts. (${err.message})"
+                }
+            }
+
+            // Archive all test outputs: screenshots, videos, traces, reports
+            archiveArtifacts(
+                artifacts        : 'test-results/**/*',
+                allowEmptyArchive: true,
+                fingerprint      : true
+            )
+
+            // JUnit test result trend graph
+            junit(
+                testResults          : 'test-results/junit.xml',
+                allowEmptyResults    : true,
+                skipPublishingChecks : true
+            )
+        }
+
+        success  { echo 'Pipeline complete — all suites executed.' }
+        failure  { echo 'Pipeline failed — check Build Artifacts for test-results.' }
+        unstable { echo 'Build unstable — review JUnit results and Allure report.' }
+    }
+}

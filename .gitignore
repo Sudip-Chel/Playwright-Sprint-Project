@@ -1,0 +1,17 @@
+node_modules/
+
+test-results/
+playwright-report/
+allure-report/
+
+dist/
+
+.env
+.env.local
+
+.DS_Store
+Thumbs.db
+
+.idea/
+.vscode/
+*.swp
