@@ -1,5 +1,6 @@
 import { Page, expect } from '@playwright/test';
 import { Logger } from '../utils/logger';
+import { RegisterLocators } from '../locators/register.locator';
 
 export interface RegistrationData {
   firstName?: string;
@@ -40,18 +41,18 @@ export class RegisterPage {
     Logger.info(`RegisterPage: Submitting registration for username=${filled.username}`);
 
   
-    await this.page.locator('input[id="customer.firstName"]').fill(filled.firstName);
-    await this.page.locator('input[id="customer.lastName"]').fill(filled.lastName);
-    await this.page.locator('input[id="customer.address.street"]').fill(filled.street);
-    await this.page.locator('input[id="customer.address.city"]').fill(filled.city);
-    await this.page.locator('input[id="customer.address.state"]').fill(filled.state);
-    await this.page.locator('input[id="customer.address.zipCode"]').fill(filled.zipCode);
-    await this.page.locator('input[id="customer.phoneNumber"]').fill(filled.phoneNumber);
-    await this.page.locator('input[id="customer.ssn"]').fill(filled.ssn);
-    await this.page.locator('input[id="customer.username"]').fill(filled.username);
+    await this.page.locator(RegisterLocators.firstNameInput).fill(filled.firstName);
+    await this.page.locator(RegisterLocators.lastNameInput).fill(filled.lastName);
+    await this.page.locator(RegisterLocators.addressInput).fill(filled.street);
+    await this.page.locator(RegisterLocators.cityInput).fill(filled.city);
+    await this.page.locator(RegisterLocators.stateInput).fill(filled.state);
+    await this.page.locator(RegisterLocators.zipCodeInput).fill(filled.zipCode);
+    await this.page.locator(RegisterLocators.phoneNumberInput).fill(filled.phoneNumber);
+    await this.page.locator(RegisterLocators.ssnInput).fill(filled.ssn);
+    await this.page.locator(RegisterLocators.usernameInput).fill(filled.username);
 
-    await this.page.locator('input[id="customer.password"]').fill(filled.password);
-    await this.page.locator('input[id="repeatedPassword"]').fill(filled.password);
+    await this.page.locator(RegisterLocators.passwordInput).fill(filled.password);
+    await this.page.locator(RegisterLocators.confirmPasswordInput).fill(filled.password);
 
     await this.page.getByRole('button', { name: 'Register' }).click();
   }

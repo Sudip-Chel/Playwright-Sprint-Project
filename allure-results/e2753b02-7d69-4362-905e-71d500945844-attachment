@@ -1,0 +1,61 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ui\transfer.ui.spec.ts >> UI Transfer Validations @ui >> TC-UI-08: Rapid clicks cause multiple debits despite single confirmation (DEF-006) @defects @FR-05 @FR-07
+- Location: tests\ui\transfer.ui.spec.ts:195:7
+
+# Error details
+
+```
+TimeoutError: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "http://localhost:9090/parabank/openaccount.htm", waiting until "load"
+
+```
+
+# Test source
+
+```ts
+  1  | import { Page, expect } from '@playwright/test';
+  2  | import { Logger } from '../utils/logger';
+  3  | 
+  4  | export enum AccountType {
+  5  |   CHECKING = '0',
+  6  |   SAVINGS = '1'
+  7  | }
+  8  | 
+  9  | export class OpenAccountPage {
+  10 |   constructor(public readonly page: Page) {}
+  11 | 
+  12 |   async navigate(): Promise<void> {
+  13 |     Logger.info('OpenAccountPage: Navigating to /parabank/openaccount.htm');
+> 14 |     await this.page.goto('/parabank/openaccount.htm');
+     |                     ^ TimeoutError: page.goto: Timeout 30000ms exceeded.
+  15 |   }
+  16 | 
+  17 | 
+  18 |   async openNewAccount(accountType: AccountType, fromAccountId: string): Promise<string> {
+  19 |     const typeLabel = accountType === AccountType.SAVINGS ? 'Savings' : 'Checking';
+  20 |     Logger.info(`OpenAccountPage: Opening ${typeLabel} account funded from #${fromAccountId}`);
+  21 | 
+  22 |     await this.page.selectOption('#type', accountType);
+  23 | 
+  24 |     await this.page.locator('#fromAccountId option').first().waitFor({ state: 'attached', timeout: 15000 });
+  25 |     await this.page.selectOption('#fromAccountId', fromAccountId);
+  26 | 
+  27 |     await this.page.getByRole('button', { name: 'Open New Account' }).click();
+  28 | 
+  29 |     await expect(
+  30 |       this.page.getByRole('heading', { name: 'Account Opened!' }),'Open-account flow should land on confirmation page').toBeVisible({ timeout: 25000 });
+  31 | 
+  32 |     const newAccountId = (await this.page.locator('#newAccountId').innerText()).trim();
+  33 |     Logger.info(`OpenAccountPage: New account created: #${newAccountId}`);
+  34 |     return newAccountId;
+  35 |   }
+  36 | }
+```

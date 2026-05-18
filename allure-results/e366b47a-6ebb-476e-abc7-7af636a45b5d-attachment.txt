@@ -1,0 +1,23 @@
+2026-05-18 21:36:11 [info]: Fixture: staggered start delay = 162 ms
+2026-05-18 21:36:11 [info]: Fixture: starting UI registration for username=qa_1779120371688
+2026-05-18 21:36:11 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-18 21:36:12 [info]: RegisterPage: Submitting registration for username=qa_1779120371688
+2026-05-18 21:36:15 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-18 21:36:15 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-18 21:36:16 [info]: AccountOverviewPage: Primary account captured: #278523
+2026-05-18 21:36:16 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-18 21:36:17 [info]: OpenAccountPage: Opening Savings account funded from #278523
+2026-05-18 21:36:17 [info]: OpenAccountPage: New account created: #278634
+2026-05-18 21:36:17 [info]: Fixture COMPLETE: user=qa_1779120371688 account1=278523 account2=278634
+2026-05-18 21:36:18 [info]: TC-E2E-07: pre source=$415.5 target=$100
+2026-05-18 21:36:18 [info]: TC-E2E-07: attempting invalid amount "0"
+2026-05-18 21:36:18 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-18 21:36:18 [info]: TransferFundsPage: Transferring $0: #278523 -> #278634
+2026-05-18 21:36:20 [info]: TC-E2E-07: attempting invalid amount "-50"
+2026-05-18 21:36:20 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-18 21:36:21 [info]: TransferFundsPage: Transferring $-50: #278523 -> #278634
+2026-05-18 21:36:22 [info]: TC-E2E-07: attempting invalid amount "abc"
+2026-05-18 21:36:22 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-18 21:36:23 [info]: TransferFundsPage: Transferring $abc: #278523 -> #278634
+2026-05-18 21:36:27 [info]: TC-E2E-07: post source=$465.5 (drift=$50.00) target=$50 (drift=$50.00) total=$100.00
+2026-05-18 21:36:27 [info]: TC-E2E-07 verdict: DEF-002+DEF-003+DEF-005 CONFIRMED ACTIVE.

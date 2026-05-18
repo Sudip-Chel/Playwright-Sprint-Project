@@ -1,0 +1,89 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e\transfer.e2e.spec.ts >> E2E Hybrid Transfer Validations @e2e >> TC-E2E-01: UI transfer + API balance + transaction history verification @smoke @FR-05 @FR-06 @FR-07
+- Location: tests\e2e\transfer.e2e.spec.ts:29:7
+
+# Error details
+
+```
+TimeoutError: page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "http://localhost:9090/parabank/register.htm", waiting until "load"
+
+```
+
+# Test source
+
+```ts
+  1  | import { Page, expect } from '@playwright/test';
+  2  | import { Logger } from '../utils/logger';
+  3  | 
+  4  | export interface RegistrationData {
+  5  |   firstName?: string;
+  6  |   lastName?: string;
+  7  |   street?: string;
+  8  |   city?: string;
+  9  |   state?: string;
+  10 |   zipCode?: string;
+  11 |   phoneNumber?: string;
+  12 |   ssn?: string;
+  13 |   username: string;
+  14 |   password: string;
+  15 | }
+  16 | 
+  17 | export class RegisterPage {
+  18 |   constructor(public readonly page: Page) {}
+  19 | 
+  20 |   async navigate(): Promise<void> {
+  21 |     Logger.info('RegisterPage: Navigating to /parabank/register.htm');
+> 22 |     await this.page.goto('/parabank/register.htm');
+     |                     ^ TimeoutError: page.goto: Timeout 30000ms exceeded.
+  23 |   }
+  24 | 
+  25 |   // Fills out the registration form.
+  26 |   async registerDynamicUser(data: RegistrationData): Promise<void> {
+  27 |     const filled: Required<RegistrationData> = {
+  28 |       firstName: data.firstName ?? 'Sudip',
+  29 |       lastName: data.lastName ?? 'Chel',
+  30 |       street: data.street ?? 'Haldia Street 123',
+  31 |       city: data.city ?? 'Haldia',
+  32 |       state: data.state ?? 'West Bengal',
+  33 |       zipCode: data.zipCode ?? '722140',
+  34 |       phoneNumber: data.phoneNumber ?? '9876543210',
+  35 |       ssn: data.ssn ?? `SSN-12345789`,
+  36 |       username: data.username,
+  37 |       password: data.password
+  38 |     };
+  39 | 
+  40 |     Logger.info(`RegisterPage: Submitting registration for username=${filled.username}`);
+  41 | 
+  42 |   
+  43 |     await this.page.locator('input[id="customer.firstName"]').fill(filled.firstName);
+  44 |     await this.page.locator('input[id="customer.lastName"]').fill(filled.lastName);
+  45 |     await this.page.locator('input[id="customer.address.street"]').fill(filled.street);
+  46 |     await this.page.locator('input[id="customer.address.city"]').fill(filled.city);
+  47 |     await this.page.locator('input[id="customer.address.state"]').fill(filled.state);
+  48 |     await this.page.locator('input[id="customer.address.zipCode"]').fill(filled.zipCode);
+  49 |     await this.page.locator('input[id="customer.phoneNumber"]').fill(filled.phoneNumber);
+  50 |     await this.page.locator('input[id="customer.ssn"]').fill(filled.ssn);
+  51 |     await this.page.locator('input[id="customer.username"]').fill(filled.username);
+  52 | 
+  53 |     await this.page.locator('input[id="customer.password"]').fill(filled.password);
+  54 |     await this.page.locator('input[id="repeatedPassword"]').fill(filled.password);
+  55 | 
+  56 |     await this.page.getByRole('button', { name: 'Register' }).click();
+  57 |   }
+  58 | 
+  59 |   async verifyRegistrationSuccess(): Promise<void> {
+  60 |     await expect(this.page.locator('.title'), 'Registration should land on Welcome page')
+  61 |       .toContainText(/welcome/i, { timeout: 15000 });
+  62 |     Logger.info('RegisterPage: Registration successful (Welcome page detected)');
+  63 |   }
+  64 | }
+```

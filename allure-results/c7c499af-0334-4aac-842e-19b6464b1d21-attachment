@@ -1,0 +1,30 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e\transfer.e2e.spec.ts >> E2E Hybrid Transfer Validations @e2e >> TC-E2E-03: Minimum boundary ($0.01) UI transfer + API balance verification @regression @FR-05 @FR-06
+- Location: tests\e2e\transfer.e2e.spec.ts:88:7
+
+# Error details
+
+```
+TimeoutError: locator.click: Timeout 20000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'Accounts Overview' })
+    - locator resolved to <a href="overview.htm">Accounts Overview</a>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+    - performing click action
+
+```
+
+```
+Test timeout of 90000ms exceeded.
+```

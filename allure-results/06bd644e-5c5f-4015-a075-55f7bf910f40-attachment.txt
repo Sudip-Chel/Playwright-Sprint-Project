@@ -1,0 +1,6 @@
+[screenshot] Capture failed for "TC-E2E-01: UI transfer + API balance + transaction history verification @smoke @FR-05 @FR-06 @FR-07": page.screenshot: Timeout 5000ms exceeded.
+Call log:
+  - taking page screenshot
+  - waiting for fonts to load...
+  - fonts loaded
+

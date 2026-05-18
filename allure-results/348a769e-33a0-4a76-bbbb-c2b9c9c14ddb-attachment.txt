@@ -1,0 +1,25 @@
+2026-05-18 21:40:23 [info]: Fixture: staggered start delay = 38 ms
+2026-05-18 21:40:23 [info]: Fixture: starting UI registration for username=qa_1779120623564
+2026-05-18 21:40:23 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-18 21:40:23 [info]: RegisterPage: Submitting registration for username=qa_1779120623564
+2026-05-18 21:40:27 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-18 21:40:27 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-18 21:40:27 [info]: AccountOverviewPage: Primary account captured: #285405
+2026-05-18 21:40:27 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-18 21:40:27 [info]: OpenAccountPage: Opening Savings account funded from #285405
+2026-05-18 21:40:29 [info]: OpenAccountPage: New account created: #285627
+2026-05-18 21:40:29 [info]: Fixture COMPLETE: user=qa_1779120623564 account1=285405 account2=285627
+2026-05-18 21:40:29 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-18 21:40:30 [info]: AccountOverviewPage: UI balance #285405 = $415.50
+2026-05-18 21:40:30 [info]: AccountOverviewPage: UI balance #285627 = $100.00
+2026-05-18 21:40:30 [info]: TC-UI-08: pre-balance (overview UI) source=$415.5 target=$100
+2026-05-18 21:40:30 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-18 21:40:31 [info]: TransferFundsPage: Firing 4 rapid clicks on Transfer button
+2026-05-18 21:40:31 [info]: TC-UI-08: 4 rapid clicks dispatched
+2026-05-18 21:40:31 [info]: TC-UI-08: Transfer page confirmation: "Transfer Complete! $25.00 has been transferred from account #285405 to account #285627. See Account Activity for more details."
+2026-05-18 21:40:31 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-18 21:40:32 [info]: AccountOverviewPage: UI balance #285405 = $315.50
+2026-05-18 21:40:32 [info]: AccountOverviewPage: UI balance #285627 = $200.00
+2026-05-18 21:40:32 [info]: TC-UI-08: post-balance (overview UI) source=$315.5 target=$200
+2026-05-18 21:40:32 [info]: TC-UI-08: UI delta — source=$100.00 target=$100.00 (4 debits observed)
+2026-05-18 21:40:32 [info]: TC-UI-08 verdict: Transfer UI claimed 1 transfer; overview UI reveals 4. DEF-006 CONFIRMED ACTIVE.
