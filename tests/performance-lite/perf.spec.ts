@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/base-fixture';
+import { test, expect } from '../../fixtures/baseFixture';
 import { Logger } from '../../utils/logger';
 
 test.describe('Performance Lite @perf', () => {

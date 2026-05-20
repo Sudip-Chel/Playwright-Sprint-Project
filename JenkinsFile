@@ -234,7 +234,7 @@ pipeline {
             // Generate Allure report from the CORRECT Playwright output path
             script {
                 def allureResult = bat(
-                    script: 'npx allure generate test-results/allure-results -o allure-report --clean',
+                    script: 'npx allure generate allure-results -o allure-report --clean',
                     returnStatus: true
                 )
                 if (allureResult != 0) {
@@ -249,7 +249,7 @@ pipeline {
                         includeProperties: false,
                         jdk              : '',
                         commandline      : 'allure',
-                        results          : [[path: 'test-results/allure-results']]
+                        results          : [[path: 'allure-results']]
                     ])
                 } catch (err) {
                     echo "Allure plugin error: ${err.message}"
@@ -287,3 +287,4 @@ pipeline {
         unstable { echo 'Build unstable — review JUnit results and Allure report.' }
     }
 }
+

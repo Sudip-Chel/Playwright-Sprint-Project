@@ -1,5 +1,5 @@
-import { test, expect } from '../../fixtures/api-fixture';
-import apiData from '../../test-data/api-transfer.data.json';
+import { test, expect } from '../../fixtures/apiFixture';
+import apiData from '../../test-data/api-transferData.json';
 import { Logger } from '../../utils/logger';
 
 interface ApiTestData {

@@ -1,5 +1,5 @@
-import { test, expect } from '../../fixtures/api-fixture';
-import e2eData from '../../test-data/e2e-transfer.data.json';
+import { test, expect } from '../../fixtures/apiFixture';
+import e2eData from '../../test-data/e2e-transferData.json';
 import { Logger } from '../../utils/logger';
 
 interface E2ETestData {

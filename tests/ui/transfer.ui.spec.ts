@@ -1,6 +1,6 @@
-import { test, expect } from '../../fixtures/api-fixture';
-import uiData from '../../test-data/ui-transfer.data.json';
-import { TransferLocators } from '../../locators/transfer.locator';
+import { test, expect } from '../../fixtures/apiFixture';
+import uiData from '../../test-data/ui-transferData.json';
+import { TransferLocators } from '../../locators/transferLocator';
 import { Logger } from '../../utils/logger';
 
 interface UiTestData {

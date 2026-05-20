@@ -1,0 +1,12 @@
+2026-05-20 13:06:29 [info]: Fixture: staggered start delay = 99 ms
+2026-05-20 13:06:29 [info]: Fixture: starting UI registration for username=qa_1779262589157
+2026-05-20 13:06:29 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-20 13:06:29 [info]: RegisterPage: Submitting registration for username=qa_1779262589157
+2026-05-20 13:06:30 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-20 13:06:30 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-20 13:06:30 [info]: AccountOverviewPage: Primary account captured: #358221
+2026-05-20 13:06:30 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-20 13:06:30 [info]: OpenAccountPage: Opening Savings account funded from #358221
+2026-05-20 13:06:31 [info]: OpenAccountPage: New account created: #358332
+2026-05-20 13:06:31 [info]: Fixture COMPLETE: user=qa_1779262589157 account1=358221 account2=358332
+2026-05-20 13:06:31 [info]: TC-API-03: history verified — Debit on #358221, Credit on #358332

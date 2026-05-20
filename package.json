@@ -1,7 +1,7 @@
 {
   "name": "parabank-capstone",
   "version": "1.0.0",
-  "description": "Enterprise-grade Playwright framework for ParaBank fund-transfer validation (Capstone)",
+  "description": "Enterprise-grade Playwright framework for ParaBank fund-transfer validation",
   "scripts": {},
   "devDependencies": {
     "@playwright/test": "^1.45.0",
