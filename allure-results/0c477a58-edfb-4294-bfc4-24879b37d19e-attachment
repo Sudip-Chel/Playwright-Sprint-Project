@@ -1,0 +1,327 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ui\transfer.ui.spec.ts >> UI Transfer Validations @ui >> TC-UI-06: Insufficient funds — overdraft incorrectly allowed (DEF-004) @defects @FR-09
+- Location: tests\ui\transfer.ui.spec.ts:158:7
+
+# Error details
+
+```
+Error: DEF-004 active: UI accepted $999999 transfer with insufficient funds.
+
+expect(received).toBeTruthy()
+
+Received: false
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - link:
+        - /url: admin.htm
+        - img [ref=e4] [cursor=pointer]
+      - link "ParaBank":
+        - /url: index.htm
+        - img "ParaBank" [ref=e5] [cursor=pointer]
+      - paragraph [ref=e6]: Experience the difference
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9]: Solutions
+        - listitem [ref=e10]:
+          - link "About Us" [ref=e11] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e12]:
+          - link "Services" [ref=e13] [cursor=pointer]:
+            - /url: services.htm
+        - listitem [ref=e14]:
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/products.jsp
+        - listitem [ref=e16]:
+          - link "Locations" [ref=e17] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - listitem [ref=e18]:
+          - link "Admin Page" [ref=e19] [cursor=pointer]:
+            - /url: admin.htm
+      - list [ref=e20]:
+        - listitem [ref=e21]:
+          - link "home" [ref=e22] [cursor=pointer]:
+            - /url: index.htm
+        - listitem [ref=e23]:
+          - link "about" [ref=e24] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e25]:
+          - link "contact" [ref=e26] [cursor=pointer]:
+            - /url: contact.htm
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - paragraph [ref=e29]: Welcome Sudip Chel
+        - heading "Account Services" [level=2] [ref=e30]
+        - list [ref=e31]:
+          - listitem [ref=e32]:
+            - link "Open New Account" [ref=e33] [cursor=pointer]:
+              - /url: openaccount.htm
+          - listitem [ref=e34]:
+            - link "Accounts Overview" [ref=e35] [cursor=pointer]:
+              - /url: overview.htm
+          - listitem [ref=e36]:
+            - link "Transfer Funds" [ref=e37] [cursor=pointer]:
+              - /url: transfer.htm
+          - listitem [ref=e38]:
+            - link "Bill Pay" [ref=e39] [cursor=pointer]:
+              - /url: billpay.htm
+          - listitem [ref=e40]:
+            - link "Find Transactions" [ref=e41] [cursor=pointer]:
+              - /url: findtrans.htm
+          - listitem [ref=e42]:
+            - link "Update Contact Info" [ref=e43] [cursor=pointer]:
+              - /url: updateprofile.htm
+          - listitem [ref=e44]:
+            - link "Request Loan" [ref=e45] [cursor=pointer]:
+              - /url: requestloan.htm
+          - listitem [ref=e46]:
+            - link "Log Out" [ref=e47] [cursor=pointer]:
+              - /url: logout.htm
+      - generic [ref=e50]:
+        - heading "Transfer Complete!" [level=1] [ref=e51]
+        - paragraph [ref=e52]: "$999999.00 has been transferred from account #33435 to account #33657."
+        - paragraph [ref=e53]: See Account Activity for more details.
+  - generic [ref=e55]:
+    - list [ref=e56]:
+      - listitem [ref=e57]:
+        - link "Home" [ref=e58] [cursor=pointer]:
+          - /url: index.htm
+        - text: "|"
+      - listitem [ref=e59]:
+        - link "About Us" [ref=e60] [cursor=pointer]:
+          - /url: about.htm
+        - text: "|"
+      - listitem [ref=e61]:
+        - link "Services" [ref=e62] [cursor=pointer]:
+          - /url: services.htm
+        - text: "|"
+      - listitem [ref=e63]:
+        - link "Products" [ref=e64] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/products.jsp
+        - text: "|"
+      - listitem [ref=e65]:
+        - link "Locations" [ref=e66] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - text: "|"
+      - listitem [ref=e67]:
+        - link "Forum" [ref=e68] [cursor=pointer]:
+          - /url: http://forums.parasoft.com/
+        - text: "|"
+      - listitem [ref=e69]:
+        - link "Site Map" [ref=e70] [cursor=pointer]:
+          - /url: sitemap.htm
+        - text: "|"
+      - listitem [ref=e71]:
+        - link "Contact Us" [ref=e72] [cursor=pointer]:
+          - /url: contact.htm
+    - paragraph [ref=e73]: © Parasoft. All rights reserved.
+    - list [ref=e74]:
+      - listitem [ref=e75]: "Visit us at:"
+      - listitem [ref=e76]:
+        - link "www.parasoft.com" [ref=e77] [cursor=pointer]:
+          - /url: http://www.parasoft.com/
+```
+
+# Test source
+
+```ts
+  73  |     await transferPage.navigate();
+  74  |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  75  | 
+  76  |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  77  |       .isVisible({ timeout: 5000 }).catch(() => false);
+  78  | 
+  79  |     expect.soft(successVisible,
+  80  |       `${data.defectId} active: UI Rejected empty amount and rendered a error page.`
+  81  |     ).toBeFalsy();
+  82  |   });
+  83  | 
+  84  |   test('TC-UI-04-B: Zero amount transfer accepted by UI (DEF-002) @defects @FR-09',
+  85  |     async ({ transferPage, activeUser, page }) => {
+  86  |     const data = dataFor('TC-UI-04-B');
+  87  |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  88  |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  89  |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-002' });
+  90  | 
+  91  |     await transferPage.navigate();
+  92  |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  93  | 
+  94  |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  95  |       .isVisible({ timeout: 5000 }).catch(() => false);
+  96  | 
+  97  |     expect.soft(successVisible,
+  98  |       `DEF-002 active: UI accepted $0 transfer and rendered success page.`
+  99  |     ).toBeTruthy();
+  100 |   });
+  101 | 
+  102 |   test('TC-UI-04-C: Negative amount transfer accepted by UI (DEF-003) @defects @FR-09',
+  103 |     async ({ transferPage, activeUser, page }) => {
+  104 |     const data = dataFor('TC-UI-04-C');
+  105 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  106 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  107 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-003' });
+  108 | 
+  109 |     await transferPage.navigate();
+  110 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  111 | 
+  112 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  113 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  114 | 
+  115 |     expect.soft(successVisible,
+  116 |       `DEF-003 active: UI accepted negative amount "${data.amount}" and rendered success page.`
+  117 |     ).toBeTruthy();
+  118 |   });
+  119 | 
+  120 |   test('TC-UI-05-A: Non-numeric "50#" partially accepted by UI (DEF-005) @defects @FR-09',
+  121 |     async ({ transferPage, activeUser, page }) => {
+  122 |     const data = dataFor('TC-UI-05-A');
+  123 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  124 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  125 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-005' });
+  126 | 
+  127 |     await transferPage.navigate();
+  128 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  129 | 
+  130 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  131 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  132 | 
+  133 |     expect.soft(successVisible,
+  134 |       `DEF-005 active: UI accepted "${data.amount}" (parsed as 50, dropping "#").`
+  135 |     ).toBeTruthy();
+  136 |   });
+  137 | 
+  138 |   test('TC-UI-05-B: Non-numeric "abc" should be rejected by UI @defects @FR-09',
+  139 |     async ({ transferPage, activeUser, page }) => {
+  140 |     const data = dataFor('TC-UI-05-B');
+  141 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  142 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  143 |     test.info().annotations.push({ type: 'Known Bug', description: data.defectId! });
+  144 | 
+  145 |     await transferPage.navigate();
+  146 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  147 | 
+  148 |     
+  149 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  150 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  151 | 
+  152 |     expect.soft(successVisible,
+  153 |       `${data.defectId}: ParaBank's handling of "abc" — success page rendered = ${successVisible}.`
+  154 |     ).toBeFalsy();
+  155 |   });
+  156 | 
+  157 | 
+  158 |   test('TC-UI-06: Insufficient funds — overdraft incorrectly allowed (DEF-004) @defects @FR-09',
+  159 |     async ({ transferPage, activeUser, page }) => {
+  160 |     const data = dataFor('TC-UI-06');
+  161 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  162 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  163 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-004' });
+  164 | 
+  165 |     await transferPage.navigate();
+  166 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  167 | 
+  168 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  169 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  170 | 
+  171 |     expect.soft(successVisible,
+  172 |       `DEF-004 active: UI accepted $${data.amount} transfer with insufficient funds.`
+> 173 |     ).toBeTruthy();
+      |       ^ Error: DEF-004 active: UI accepted $999999 transfer with insufficient funds.
+  174 |   });
+  175 | 
+  176 |   
+  177 |   test('TC-UI-07: Same source and destination account allowed (DEF-001) @defects @FR-09',
+  178 |     async ({ transferPage, activeUser, page }) => {
+  179 |     const data = dataFor('TC-UI-07');
+  180 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  181 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  182 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-001' });
+  183 | 
+  184 |     await transferPage.navigate();
+  185 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account1);
+  186 | 
+  187 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  188 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  189 | 
+  190 |     expect.soft(successVisible,
+  191 |       `DEF-001 active: UI accepted transfer from #${activeUser.account1} to itself.`
+  192 |     ).toBeTruthy();
+  193 |   });
+  194 | 
+  195 |   test('TC-UI-08: Rapid clicks cause multiple debits despite single confirmation (DEF-006) @defects @FR-05 @FR-07',
+  196 |     async ({ transferPage, accountOverviewPage, activeUser, page }) => {
+  197 |     test.info().annotations.push({ type: 'Test Type', description: 'UI (Rapid-Click)' });
+  198 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-05, FR-07' });
+  199 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-006' });
+  200 | 
+  201 |     const TRANSFER_AMOUNT = 25;
+  202 |     const CLICK_COUNT = 4;
+  203 | 
+  204 |     await accountOverviewPage.navigate();
+  205 |     const preSource = await accountOverviewPage.getBalanceForAccount(activeUser.account1);
+  206 |     const preTarget = await accountOverviewPage.getBalanceForAccount(activeUser.account2);
+  207 |     Logger.info(`TC-UI-08: pre-balance (overview UI) source=$${preSource} target=$${preTarget}`);
+  208 | 
+  209 |     await transferPage.navigate();
+  210 |     await transferPage.fillTransferForm(
+  211 |       String(TRANSFER_AMOUNT),
+  212 |       activeUser.account1,
+  213 |       activeUser.account2
+  214 |     );
+  215 | 
+  216 |     await transferPage.rapidClickTransfer(CLICK_COUNT);
+  217 |     Logger.info(`TC-UI-08: ${CLICK_COUNT} rapid clicks dispatched`);
+  218 | 
+  219 |     await page.locator(TransferLocators.successMessageBody)
+  220 |       .waitFor({ state: 'visible', timeout: 10000 });
+  221 |     const confirmationText = await transferPage.getConfirmationText();
+  222 |     Logger.info(`TC-UI-08: Transfer page confirmation: "${confirmationText.replace(/\s+/g, ' ').trim()}"`);
+  223 | 
+  224 |     expect(confirmationText, 'Transfer page should still show single transfer text')
+  225 |       .toContain(`$${TRANSFER_AMOUNT.toFixed(2)}`);
+  226 | 
+  227 |    
+  228 |     await accountOverviewPage.navigate();
+  229 |     const postSource = await accountOverviewPage.getBalanceForAccount(activeUser.account1);
+  230 |     const postTarget = await accountOverviewPage.getBalanceForAccount(activeUser.account2);
+  231 |     Logger.info(`TC-UI-08: post-balance (overview UI) source=$${postSource} target=$${postTarget}`);
+  232 | 
+  233 |     const sourceDelta = preSource - postSource;
+  234 |     const targetDelta = postTarget - preTarget;
+  235 |     const observedDebitCount = Math.round(sourceDelta / TRANSFER_AMOUNT);
+  236 |     Logger.info(
+  237 |       `TC-UI-08: UI delta — source=$${sourceDelta.toFixed(2)} target=$${targetDelta.toFixed(2)} ` +
+  238 |       `(${observedDebitCount} debits observed)`
+  239 |     );
+  240 | 
+  241 | 
+  242 |     expect.soft(observedDebitCount,
+  243 |       `DEF-006 active: Transfer page confirmed ONE $${TRANSFER_AMOUNT} transfer, ` +
+  244 |       `but overview shows ${observedDebitCount} debits totaling $${sourceDelta.toFixed(2)}. ` +
+  245 |       `Source #${activeUser.account1}: $${preSource} → $${postSource}.`
+  246 |     ).toBeGreaterThan(1);
+  247 | 
+  248 |     expect.soft(targetDelta,
+  249 |       `DEF-006 active: Target #${activeUser.account2} credited multiple times. ` +
+  250 |       `Expected $${TRANSFER_AMOUNT} delta, observed $${targetDelta.toFixed(2)}.`
+  251 |     ).toBeGreaterThan(TRANSFER_AMOUNT);
+  252 | 
+  253 |     Logger.info(
+  254 |       `TC-UI-08 verdict: Transfer UI claimed 1 transfer; overview UI reveals ${observedDebitCount}. ` +
+  255 |       `DEF-006 ${observedDebitCount > 1 ? 'CONFIRMED ACTIVE' : 'appears FIXED'}.`
+  256 |     );
+  257 |   });
+  258 | });
+```

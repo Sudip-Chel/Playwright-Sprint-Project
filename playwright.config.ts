@@ -24,7 +24,7 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: 'http://localhost:9090/',
+    baseURL: 'http://localhost:9090',
 
     actionTimeout: 20000,
     navigationTimeout: 30000,

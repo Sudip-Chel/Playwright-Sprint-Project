@@ -1,3 +1,137 @@
+// pipeline {
+//     agent any
+
+//     options {
+//         timeout(time: 90, unit: 'MINUTES')
+//         timestamps()
+//         buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '14'))
+//         disableConcurrentBuilds()
+//     }
+
+//     environment {
+//         CI                = 'true'
+//         PW_WORKERS        = '2'
+//         NODE_OPTIONS      = '--max-old-space-size=4096'
+//         PARABANK_BASE_URL = 'http://localhost:9090'
+//         LOG_LEVEL         = 'info'
+//     }
+
+//     stages {
+
+//         stage('Checkout') {
+//             steps {
+//                 checkout scm
+//             }
+//         }
+
+//         stage('Setup - Dependencies and Browsers') {
+//             steps {
+//                 bat 'node --version'
+//                 bat 'npm --version'
+//                 bat 'npm ci'
+//                 bat 'npx playwright install --with-deps chromium firefox webkit'
+//             }
+//         }
+
+//         stage('Type Check') {
+//             steps {
+//                 bat 'npx tsc --noEmit'
+//             }
+//         }
+
+//         stage('UI Tests - Cross Browser') {
+//             steps {
+//                 script {
+//                     def result = bat(
+//                         script: 'npx playwright test tests/ui',
+//                         returnStatus: true
+//                     )
+//                     echo "UI Tests exit code: ${result}"
+//                 }
+//             }
+//         }
+
+//         stage('API Tests - Chromium Only') {
+//             steps {
+//                 script {
+//                     def result = bat(
+//                         script: 'npx playwright test tests/api',
+//                         returnStatus: true
+//                     )
+//                     echo "API Tests exit code: ${result}"
+//                 }
+//             }
+//         }
+
+//         stage('E2E Hybrid Tests - Cross Browser') {
+//             steps {
+//                 script {
+//                     def result = bat(
+//                         script: 'npx playwright test tests/e2e',
+//                         returnStatus: true
+//                     )
+//                     echo "E2E Tests exit code: ${result}"
+//                 }
+//             }
+//         }
+
+//         stage('Performance Lite - Chromium Only') {
+//             steps {
+//                 script {
+//                     def result = bat(
+//                         script: 'npx playwright test tests/performance-lite',
+//                         returnStatus: true
+//                     )
+//                     echo "Performance Tests exit code: ${result}"
+//                 }
+//             }
+//         }
+//     }
+
+//     post {
+//         always {
+//             script {
+//                 def allureResult = bat(
+//                     script: 'npx allure generate allure-results -o allure-report --clean',
+//                     returnStatus: true
+//                 )
+//                 if (allureResult != 0) {
+//                     echo "Allure report generation exited with code ${allureResult} — results may be empty."
+//                 }
+//             }
+
+//             script {
+//                 try {
+//                     allure([
+//                         includeProperties: false,
+//                         jdk              : '',
+//                         results          : [[path: 'test-results/allure-results']]
+//                     ])
+//                 } catch (err) {
+//                     echo "Allure plugin not installed — reports available in Build Artifacts. (${err.message})"
+//                 }
+//             }
+
+//             archiveArtifacts(
+//                 artifacts        : 'test-results/**/*',
+//                 allowEmptyArchive: true,
+//                 fingerprint      : true
+//             )
+
+//             junit(
+//                 testResults          : 'test-results/junit.xml',
+//                 allowEmptyResults    : true,
+//                 skipPublishingChecks : true
+//             )
+//         }
+
+//         success  { echo 'Pipeline complete — all suites executed.' }
+//         failure  { echo 'Pipeline failed — check Build Artifacts for test-results.' }
+//         unstable { echo 'Build unstable — review JUnit results and Allure report.' }
+//     }
+// }
+
+
 pipeline {
     agent any
 
@@ -30,6 +164,13 @@ pipeline {
                 bat 'npm --version'
                 bat 'npm ci'
                 bat 'npx playwright install --with-deps chromium firefox webkit'
+            }
+        }
+
+        stage('Prepare Directories') {
+            steps {
+                bat 'if not exist "test-results\\screenshots" mkdir "test-results\\screenshots"'
+                bat 'if not exist "test-results\\allure-results" mkdir "test-results\\allure-results"'
             }
         }
 
@@ -90,9 +231,10 @@ pipeline {
 
     post {
         always {
+            // Generate Allure report from the CORRECT Playwright output path
             script {
                 def allureResult = bat(
-                    script: 'npx allure generate allure-results -o allure-report --clean',
+                    script: 'npx allure generate test-results/allure-results -o allure-report --clean',
                     returnStatus: true
                 )
                 if (allureResult != 0) {
@@ -100,24 +242,39 @@ pipeline {
                 }
             }
 
+            // Publish Allure report via Jenkins Allure plugin
             script {
                 try {
                     allure([
                         includeProperties: false,
                         jdk              : '',
+                        commandline      : 'allure',
                         results          : [[path: 'test-results/allure-results']]
                     ])
                 } catch (err) {
-                    echo "Allure plugin not installed — reports available in Build Artifacts. (${err.message})"
+                    echo "Allure plugin error: ${err.message}"
                 }
             }
 
+            // Publish Playwright HTML Report
+            publishHTML([
+                allowMissing         : true,
+                alwaysLinkToLastBuild: true,
+                keepAll              : true,
+                reportDir            : 'test-results/html-report',
+                reportFiles          : 'index.html',
+                reportName           : 'Playwright HTML Report',
+                reportTitles         : ''
+            ])
+
+            // Archive all test artifacts
             archiveArtifacts(
                 artifacts        : 'test-results/**/*',
                 allowEmptyArchive: true,
                 fingerprint      : true
             )
 
+            // Publish JUnit results
             junit(
                 testResults          : 'test-results/junit.xml',
                 allowEmptyResults    : true,

@@ -1,0 +1,17 @@
+2026-05-19 11:53:49 [info]: Fixture: staggered start delay = 710 ms
+2026-05-19 11:53:50 [info]: Fixture: starting UI registration for username=qa_1779171830678
+2026-05-19 11:53:50 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 11:53:51 [info]: RegisterPage: Submitting registration for username=qa_1779171830678
+2026-05-19 11:53:52 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 11:53:52 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 11:53:53 [info]: AccountOverviewPage: Primary account captured: #304053
+2026-05-19 11:53:53 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 11:53:53 [info]: OpenAccountPage: Opening Savings account funded from #304053
+2026-05-19 11:53:53 [info]: OpenAccountPage: New account created: #304275
+2026-05-19 11:53:53 [info]: Fixture COMPLETE: user=qa_1779171830678 account1=304053 account2=304275
+{"level":"info","message":{"accountId":"304053","balance":415.5,"op":"getBalance"},"timestamp":"2026-05-19T06:23:54.142Z"}
+2026-05-19 11:53:54 [info]: TC-E2E-04: pre source=$415.5 (attempting overdraft of $999999)
+2026-05-19 11:53:54 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 11:53:54 [info]: TransferFundsPage: Transferring $999999: #304053 -> #304275
+{"level":"info","message":{"accountId":"304053","balance":-999583.5,"op":"getBalance"},"timestamp":"2026-05-19T06:23:55.627Z"}
+2026-05-19 11:53:55 [info]: TC-E2E-04: post source=$-999583.5

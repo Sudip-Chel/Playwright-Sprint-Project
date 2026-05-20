@@ -1,0 +1,25 @@
+2026-05-19 14:21:09 [info]: Fixture: staggered start delay = 440 ms
+2026-05-19 14:21:10 [info]: Fixture: starting UI registration for username=qa_1779180670030
+2026-05-19 14:21:10 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 14:21:17 [info]: RegisterPage: Submitting registration for username=qa_1779180670030
+2026-05-19 14:21:20 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 14:21:20 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 14:21:24 [info]: AccountOverviewPage: Primary account captured: #36987
+2026-05-19 14:21:24 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 14:21:26 [info]: OpenAccountPage: Opening Savings account funded from #36987
+2026-05-19 14:21:30 [info]: OpenAccountPage: New account created: #37209
+2026-05-19 14:21:30 [info]: Fixture COMPLETE: user=qa_1779180670030 account1=36987 account2=37209
+{"level":"info","message":{"accountId":"36987","balance":5050.5,"op":"getBalance"},"timestamp":"2026-05-19T08:51:32.450Z"}
+{"level":"info","message":{"accountId":"37209","balance":100,"op":"getBalance"},"timestamp":"2026-05-19T08:51:34.088Z"}
+2026-05-19 14:21:34 [info]: TC-E2E-06: pre source=$5050.5 target=$100
+2026-05-19 14:21:34 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 14:21:37 [info]: TransferFundsPage: Transferring $10: #36987 -> #37209
+2026-05-19 14:21:55 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 14:21:57 [info]: TransferFundsPage: Transferring $20: #36987 -> #37209
+2026-05-19 14:22:07 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 14:22:10 [info]: TransferFundsPage: Transferring $30: #36987 -> #37209
+{"level":"info","message":{"accountId":"36987","balance":4990.5,"op":"getBalance"},"timestamp":"2026-05-19T08:52:26.037Z"}
+{"level":"info","message":{"accountId":"37209","balance":160,"op":"getBalance"},"timestamp":"2026-05-19T08:52:26.527Z"}
+2026-05-19 14:22:26 [info]: TC-E2E-06: post source=$4990.5 target=$160
+{"level":"info","message":{"accountId":"36987","count":4,"op":"getTransactions"},"timestamp":"2026-05-19T08:52:27.024Z"}
+{"level":"info","message":{"accountId":"37209","count":4,"op":"getTransactions"},"timestamp":"2026-05-19T08:52:28.185Z"}

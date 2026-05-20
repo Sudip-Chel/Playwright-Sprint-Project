@@ -1,0 +1,97 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e\transfer.e2e.spec.ts >> E2E Hybrid Transfer Validations @e2e >> TC-E2E-01: UI transfer + API balance + transaction history verification @smoke @FR-05 @FR-06 @FR-07
+- Location: tests\e2e\transfer.e2e.spec.ts:29:7
+
+# Error details
+
+```
+TimeoutError: locator.click: Timeout 20000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Register' })
+    - locator resolved to <input type="submit" class="button" value="Register"/>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+    - performing click action
+
+```
+
+# Test source
+
+```ts
+  1  | import { Page, expect } from '@playwright/test';
+  2  | import { Logger } from '../utils/logger';
+  3  | import { RegisterLocators } from '../locators/register.locator';
+  4  | 
+  5  | export interface RegistrationData {
+  6  |   firstName?: string;
+  7  |   lastName?: string;
+  8  |   street?: string;
+  9  |   city?: string;
+  10 |   state?: string;
+  11 |   zipCode?: string;
+  12 |   phoneNumber?: string;
+  13 |   ssn?: string;
+  14 |   username: string;
+  15 |   password: string;
+  16 | }
+  17 | 
+  18 | export class RegisterPage {
+  19 |   constructor(public readonly page: Page) {}
+  20 | 
+  21 |   async navigate(): Promise<void> {
+  22 |     Logger.info('RegisterPage: Navigating to /parabank/register.htm');
+  23 |     await this.page.goto('/parabank/register.htm');
+  24 |   }
+  25 | 
+  26 |   // Fills out the registration form.
+  27 |   async registerDynamicUser(data: RegistrationData): Promise<void> {
+  28 |     const filled: Required<RegistrationData> = {
+  29 |       firstName: data.firstName ?? 'Sudip',
+  30 |       lastName: data.lastName ?? 'Chel',
+  31 |       street: data.street ?? 'Haldia Street 123',
+  32 |       city: data.city ?? 'Haldia',
+  33 |       state: data.state ?? 'West Bengal',
+  34 |       zipCode: data.zipCode ?? '722140',
+  35 |       phoneNumber: data.phoneNumber ?? '9876543210',
+  36 |       ssn: data.ssn ?? `SSN-12345789`,
+  37 |       username: data.username,
+  38 |       password: data.password
+  39 |     };
+  40 | 
+  41 |     Logger.info(`RegisterPage: Submitting registration for username=${filled.username}`);
+  42 | 
+  43 |   
+  44 |     await this.page.locator(RegisterLocators.firstNameInput).fill(filled.firstName);
+  45 |     await this.page.locator(RegisterLocators.lastNameInput).fill(filled.lastName);
+  46 |     await this.page.locator(RegisterLocators.addressInput).fill(filled.street);
+  47 |     await this.page.locator(RegisterLocators.cityInput).fill(filled.city);
+  48 |     await this.page.locator(RegisterLocators.stateInput).fill(filled.state);
+  49 |     await this.page.locator(RegisterLocators.zipCodeInput).fill(filled.zipCode);
+  50 |     await this.page.locator(RegisterLocators.phoneNumberInput).fill(filled.phoneNumber);
+  51 |     await this.page.locator(RegisterLocators.ssnInput).fill(filled.ssn);
+  52 |     await this.page.locator(RegisterLocators.usernameInput).fill(filled.username);
+  53 | 
+  54 |     await this.page.locator(RegisterLocators.passwordInput).fill(filled.password);
+  55 |     await this.page.locator(RegisterLocators.confirmPasswordInput).fill(filled.password);
+  56 | 
+> 57 |     await this.page.getByRole('button', { name: 'Register' }).click();
+     |                                                               ^ TimeoutError: locator.click: Timeout 20000ms exceeded.
+  58 |   }
+  59 | 
+  60 |   async verifyRegistrationSuccess(): Promise<void> {
+  61 |     await expect(this.page.locator('.title'), 'Registration should land on Welcome page')
+  62 |       .toContainText(/welcome/i, { timeout: 15000 });
+  63 |     Logger.info('RegisterPage: Registration successful (Welcome page detected)');
+  64 |   }
+  65 | }
+```

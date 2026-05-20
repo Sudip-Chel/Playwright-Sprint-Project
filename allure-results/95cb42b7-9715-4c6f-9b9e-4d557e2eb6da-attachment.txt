@@ -1,0 +1,27 @@
+2026-05-19 11:55:38 [info]: Fixture: staggered start delay = 475 ms
+2026-05-19 11:55:39 [info]: Fixture: starting UI registration for username=qa_1779171939418
+2026-05-19 11:55:39 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 11:55:41 [info]: RegisterPage: Submitting registration for username=qa_1779171939418
+2026-05-19 11:55:43 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 11:55:43 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 11:55:45 [info]: AccountOverviewPage: Primary account captured: #309492
+2026-05-19 11:55:45 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 11:55:45 [info]: OpenAccountPage: Opening Savings account funded from #309492
+2026-05-19 11:55:46 [info]: OpenAccountPage: New account created: #309603
+2026-05-19 11:55:46 [info]: Fixture COMPLETE: user=qa_1779171939418 account1=309492 account2=309603
+{"level":"info","message":{"accountId":"309492","balance":415.5,"op":"getBalance"},"timestamp":"2026-05-19T06:25:46.298Z"}
+{"level":"info","message":{"accountId":"309603","balance":100,"op":"getBalance"},"timestamp":"2026-05-19T06:25:46.427Z"}
+2026-05-19 11:55:46 [info]: TC-E2E-07: pre source=$415.5 target=$100
+2026-05-19 11:55:46 [info]: TC-E2E-07: attempting invalid amount "0"
+2026-05-19 11:55:46 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 11:55:47 [info]: TransferFundsPage: Transferring $0: #309492 -> #309603
+2026-05-19 11:55:48 [info]: TC-E2E-07: attempting invalid amount "-50"
+2026-05-19 11:55:48 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 11:55:49 [info]: TransferFundsPage: Transferring $-50: #309492 -> #309603
+2026-05-19 11:55:51 [info]: TC-E2E-07: attempting invalid amount "abc"
+2026-05-19 11:55:51 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 11:55:51 [info]: TransferFundsPage: Transferring $abc: #309492 -> #309603
+{"level":"info","message":{"accountId":"309492","balance":465.5,"op":"getBalance"},"timestamp":"2026-05-19T06:25:53.527Z"}
+{"level":"info","message":{"accountId":"309603","balance":50,"op":"getBalance"},"timestamp":"2026-05-19T06:25:53.537Z"}
+2026-05-19 11:55:53 [info]: TC-E2E-07: post source=$465.5 (drift=$50.00) target=$50 (drift=$50.00) total=$100.00
+2026-05-19 11:55:53 [info]: TC-E2E-07 verdict: DEF-002+DEF-003+DEF-005 CONFIRMED ACTIVE.

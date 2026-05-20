@@ -1,0 +1,21 @@
+2026-05-19 14:18:49 [info]: Fixture: staggered start delay = 173 ms
+2026-05-19 14:18:49 [info]: Fixture: starting UI registration for username=qa_1779180529736
+2026-05-19 14:18:49 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 14:18:55 [info]: RegisterPage: Submitting registration for username=qa_1779180529736
+2026-05-19 14:19:13 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 14:19:13 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 14:19:31 [info]: AccountOverviewPage: Primary account captured: #34434
+2026-05-19 14:19:31 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 14:19:32 [info]: OpenAccountPage: Opening Savings account funded from #34434
+2026-05-19 14:19:35 [info]: OpenAccountPage: New account created: #34767
+2026-05-19 14:19:35 [info]: Fixture COMPLETE: user=qa_1779180529736 account1=34434 account2=34767
+{"level":"info","message":{"accountId":"34434","balance":5050.5,"op":"getBalance"},"timestamp":"2026-05-19T08:49:37.534Z"}
+{"level":"info","message":{"accountId":"34767","balance":100,"op":"getBalance"},"timestamp":"2026-05-19T08:49:38.039Z"}
+2026-05-19 14:19:38 [info]: TC-E2E-01: pre source=$5050.5 target=$100
+2026-05-19 14:19:38 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 14:19:40 [info]: TransferFundsPage: Transferring $100: #34434 -> #34767
+{"level":"info","message":{"accountId":"34434","balance":4950.5,"op":"getBalance"},"timestamp":"2026-05-19T08:49:54.115Z"}
+{"level":"info","message":{"accountId":"34767","balance":200,"op":"getBalance"},"timestamp":"2026-05-19T08:49:54.723Z"}
+2026-05-19 14:19:54 [info]: TC-E2E-01: post source=$4950.5 target=$200
+{"level":"info","message":{"accountId":"34434","count":2,"op":"getTransactions"},"timestamp":"2026-05-19T08:49:55.247Z"}
+{"level":"info","message":{"accountId":"34767","count":2,"op":"getTransactions"},"timestamp":"2026-05-19T08:49:57.359Z"}

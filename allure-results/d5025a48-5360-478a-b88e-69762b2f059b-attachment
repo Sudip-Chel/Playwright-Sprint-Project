@@ -1,0 +1,288 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e\transfer.e2e.spec.ts >> E2E Hybrid Transfer Validations @e2e >> TC-E2E-06: Three consecutive UI transfers (10, 20, 30) — cumulative balance and history @regression @FR-06 @FR-07
+- Location: tests\e2e\transfer.e2e.spec.ts:164:7
+
+# Error details
+
+```
+Error: apiClient.getTransactions(42870) -> HTTP 429
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - link:
+        - /url: admin.htm
+        - img [ref=e4]
+      - link "ParaBank":
+        - /url: index.htm
+        - img "ParaBank" [ref=e5]
+      - paragraph [ref=e6]: Experience the difference
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9]: Solutions
+        - listitem [ref=e10]:
+          - link "About Us" [ref=e11]:
+            - /url: about.htm
+        - listitem [ref=e12]:
+          - link "Services" [ref=e13]:
+            - /url: services.htm
+        - listitem [ref=e14]:
+          - link "Products" [ref=e15]:
+            - /url: http://www.parasoft.com/jsp/products.jsp
+        - listitem [ref=e16]:
+          - link "Locations" [ref=e17]:
+            - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - listitem [ref=e18]:
+          - link "Admin Page" [ref=e19]:
+            - /url: admin.htm
+      - list [ref=e20]:
+        - listitem [ref=e21]:
+          - link "home" [ref=e22]:
+            - /url: index.htm
+        - listitem [ref=e23]:
+          - link "about" [ref=e24]:
+            - /url: about.htm
+        - listitem [ref=e25]:
+          - link "contact" [ref=e26]:
+            - /url: contact.htm
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - paragraph [ref=e29]: Welcome Sudip Chel
+        - heading "Account Services" [level=2] [ref=e30]
+        - list [ref=e31]:
+          - listitem [ref=e32]:
+            - link "Open New Account" [ref=e33]:
+              - /url: openaccount.htm
+          - listitem [ref=e34]:
+            - link "Accounts Overview" [ref=e35]:
+              - /url: overview.htm
+          - listitem [ref=e36]:
+            - link "Transfer Funds" [ref=e37]:
+              - /url: transfer.htm
+          - listitem [ref=e38]:
+            - link "Bill Pay" [ref=e39]:
+              - /url: billpay.htm
+          - listitem [ref=e40]:
+            - link "Find Transactions" [ref=e41]:
+              - /url: findtrans.htm
+          - listitem [ref=e42]:
+            - link "Update Contact Info" [ref=e43]:
+              - /url: updateprofile.htm
+          - listitem [ref=e44]:
+            - link "Request Loan" [ref=e45]:
+              - /url: requestloan.htm
+          - listitem [ref=e46]:
+            - link "Log Out" [ref=e47]:
+              - /url: logout.htm
+      - generic [ref=e50]:
+        - heading "Transfer Complete!" [level=1] [ref=e51]
+        - paragraph [ref=e52]: "$30.00 has been transferred from account #42870 to account #42981."
+        - paragraph [ref=e53]: See Account Activity for more details.
+  - generic [ref=e55]:
+    - list [ref=e56]:
+      - listitem [ref=e57]:
+        - link "Home" [ref=e58]:
+          - /url: index.htm
+        - text: "|"
+      - listitem [ref=e59]:
+        - link "About Us" [ref=e60]:
+          - /url: about.htm
+        - text: "|"
+      - listitem [ref=e61]:
+        - link "Services" [ref=e62]:
+          - /url: services.htm
+        - text: "|"
+      - listitem [ref=e63]:
+        - link "Products" [ref=e64]:
+          - /url: http://www.parasoft.com/jsp/products.jsp
+        - text: "|"
+      - listitem [ref=e65]:
+        - link "Locations" [ref=e66]:
+          - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - text: "|"
+      - listitem [ref=e67]:
+        - link "Forum" [ref=e68]:
+          - /url: http://forums.parasoft.com/
+        - text: "|"
+      - listitem [ref=e69]:
+        - link "Site Map" [ref=e70]:
+          - /url: sitemap.htm
+        - text: "|"
+      - listitem [ref=e71]:
+        - link "Contact Us" [ref=e72]:
+          - /url: contact.htm
+    - paragraph [ref=e73]: © Parasoft. All rights reserved.
+    - list [ref=e74]:
+      - listitem [ref=e75]: "Visit us at:"
+      - listitem [ref=e76]:
+        - link "www.parasoft.com" [ref=e77]:
+          - /url: http://www.parasoft.com/
+```
+
+# Test source
+
+```ts
+  1   | import { test as baseTest } from './base-fixture';
+  2   | import { APIRequestContext, APIResponse } from '@playwright/test';
+  3   | import { ApiLogger, Logger } from '../utils/logger';
+  4   | 
+  5   | export interface Transaction {
+  6   |   id: number;
+  7   |   accountId: number;
+  8   |   type: 'Debit' | 'Credit';
+  9   |   amount: number | string;
+  10  |   description?: string;
+  11  |   date?: string;
+  12  | }
+  13  | 
+  14  | export interface TransferResult {
+  15  |   status: number;
+  16  |   body: string;
+  17  |   ok: boolean;
+  18  | }
+  19  | 
+  20  | export interface Account {
+  21  |   id: number;
+  22  |   customerId?: number;
+  23  |   type?: string;
+  24  |   balance: number;
+  25  | }
+  26  | 
+  27  | export interface ApiClient {
+  28  |   getBalance(accountId: string): Promise<number>;
+  29  | 
+  30  |   getTransactions(accountId: string): Promise<Transaction[]>;
+  31  | 
+  32  |   transfer(from: string, to: string, amount: string): Promise<TransferResult>;
+  33  | 
+  34  |   getAccount(accountId: string): Promise<Account>;
+  35  | 
+  36  |   readonly raw: APIRequestContext;
+  37  | }
+  38  | 
+  39  | type ApiFixtures = {
+  40  |   apiClient: ApiClient;
+  41  | };
+  42  | 
+  43  | async function withRetry<T>(
+  44  |   fn: () => Promise<APIResponse>,
+  45  |   label: string,
+  46  |   maxAttempts = 2
+  47  | ): Promise<APIResponse> {
+  48  |   let lastErr: Error | null = null;
+  49  |   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  50  |     try {
+  51  |       const res = await fn();
+  52  |       if (res.status() >= 500 && attempt < maxAttempts) {
+  53  |         Logger.warn(`apiClient: ${label} returned ${res.status()}, retry ${attempt}/${maxAttempts}`);
+  54  |         await new Promise(r => setTimeout(r, 800 * attempt));
+  55  |         continue;
+  56  |       }
+  57  |       return res;
+  58  |     } catch (e) {
+  59  |       lastErr = e as Error;
+  60  |       if (attempt < maxAttempts) {
+  61  |         Logger.warn(`apiClient: ${label} threw "${lastErr.message}", retry ${attempt}/${maxAttempts}`);
+  62  |         await new Promise(r => setTimeout(r, 800 * attempt));
+  63  |       }
+  64  |     }
+  65  |   }
+  66  |   throw lastErr ?? new Error(`apiClient: ${label} failed after ${maxAttempts} attempts`);
+  67  | }
+  68  | 
+  69  | export const test = baseTest.extend<ApiFixtures>({
+  70  | 
+  71  |   apiClient: async ({ page }, use) => {
+  72  |     const ctx: APIRequestContext = page.request;
+  73  | 
+  74  |     const client: ApiClient = {
+  75  |       raw: ctx,
+  76  | 
+  77  |       async getBalance(accountId: string): Promise<number> {
+  78  |         const res = await withRetry(
+  79  |           () => ctx.get(`/parabank/services/bank/accounts/${accountId}`, {
+  80  |             headers: { 'Accept': 'application/json' }
+  81  |           }),
+  82  |           `GET /accounts/${accountId}`
+  83  |         );
+  84  |         if (res.status() !== 200) {
+  85  |           throw new Error(`apiClient.getBalance(${accountId}) -> HTTP ${res.status()}`);
+  86  |         }
+  87  |         const data = await res.json();
+  88  |         const balance = parseFloat(data.balance);
+  89  |         ApiLogger.info({ op: 'getBalance', accountId, balance });
+  90  |         return balance;
+  91  |       },
+  92  | 
+  93  |       async getTransactions(accountId: string): Promise<Transaction[]> {
+  94  |         const res = await withRetry(
+  95  |           () => ctx.get(`/parabank/services/bank/accounts/${accountId}/transactions`, {
+  96  |             headers: { 'Accept': 'application/json' }
+  97  |           }),
+  98  |           `GET /accounts/${accountId}/transactions`
+  99  |         );
+  100 |         if (res.status() !== 200) {
+> 101 |           throw new Error(`apiClient.getTransactions(${accountId}) -> HTTP ${res.status()}`);
+      |                 ^ Error: apiClient.getTransactions(42870) -> HTTP 429
+  102 |         }
+  103 |         const txns: Transaction[] = await res.json();
+  104 |         ApiLogger.info({ op: 'getTransactions', accountId, count: txns.length });
+  105 |         return txns;
+  106 |       },
+  107 | 
+  108 |       async transfer(from: string, to: string, amount: string): Promise<TransferResult> {
+  109 |         const res = await withRetry(
+  110 |           () => ctx.post(`/parabank/services/bank/transfer`, {
+  111 |             params: { fromAccountId: from, toAccountId: to, amount },
+  112 |             headers: { 'Accept': 'application/json' }
+  113 |           }),
+  114 |           `POST /transfer`
+  115 |         );
+  116 |         const body = await res.text();
+  117 |         const result: TransferResult = {
+  118 |           status: res.status(),
+  119 |           body,
+  120 |           ok: res.status() === 200
+  121 |         };
+  122 |         ApiLogger.info({
+  123 |           op: 'transfer',
+  124 |           from,
+  125 |           to,
+  126 |           amount,
+  127 |           status: result.status,
+  128 |           ok: result.ok
+  129 |         });
+  130 |         return result;
+  131 |       },
+  132 | 
+  133 |       async getAccount(accountId: string): Promise<Account> {
+  134 |         const res = await withRetry(
+  135 |           () => ctx.get(`/parabank/services/bank/accounts/${accountId}`, {
+  136 |             headers: { 'Accept': 'application/json' }
+  137 |           }),
+  138 |           `GET /accounts/${accountId} (full)`
+  139 |         );
+  140 |         if (res.status() !== 200) {
+  141 |           throw new Error(`apiClient.getAccount(${accountId}) -> HTTP ${res.status()}`);
+  142 |         }
+  143 |         return await res.json();
+  144 |       }
+  145 |     };
+  146 | 
+  147 |     await use(client);
+  148 |   }
+  149 | });
+  150 | 
+  151 | export { expect } from '@playwright/test';
+```

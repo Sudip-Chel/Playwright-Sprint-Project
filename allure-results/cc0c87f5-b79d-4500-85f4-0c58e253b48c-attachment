@@ -1,0 +1,352 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ui\transfer.ui.spec.ts >> UI Transfer Validations @ui >> TC-UI-04-B: Zero amount transfer accepted by UI (DEF-002) @defects @FR-09
+- Location: tests\ui\transfer.ui.spec.ts:84:7
+
+# Error details
+
+```
+Error: DEF-002 active: UI accepted $0 transfer and rendered success page.
+
+expect(received).toBeTruthy()
+
+Received: false
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - link:
+        - /url: admin.htm
+        - img [ref=e4] [cursor=pointer]
+      - link "ParaBank":
+        - /url: index.htm
+        - img "ParaBank" [ref=e5] [cursor=pointer]
+      - paragraph [ref=e6]: Experience the difference
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9]: Solutions
+        - listitem [ref=e10]:
+          - link "About Us" [ref=e11] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e12]:
+          - link "Services" [ref=e13] [cursor=pointer]:
+            - /url: services.htm
+        - listitem [ref=e14]:
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/products.jsp
+        - listitem [ref=e16]:
+          - link "Locations" [ref=e17] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - listitem [ref=e18]:
+          - link "Admin Page" [ref=e19] [cursor=pointer]:
+            - /url: admin.htm
+      - list [ref=e20]:
+        - listitem [ref=e21]:
+          - link "home" [ref=e22] [cursor=pointer]:
+            - /url: index.htm
+        - listitem [ref=e23]:
+          - link "about" [ref=e24] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e25]:
+          - link "contact" [ref=e26] [cursor=pointer]:
+            - /url: contact.htm
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - paragraph [ref=e29]: Welcome Sudip Chel
+        - heading "Account Services" [level=2] [ref=e30]
+        - list [ref=e31]:
+          - listitem [ref=e32]:
+            - link "Open New Account" [ref=e33] [cursor=pointer]:
+              - /url: openaccount.htm
+          - listitem [ref=e34]:
+            - link "Accounts Overview" [ref=e35] [cursor=pointer]:
+              - /url: overview.htm
+          - listitem [ref=e36]:
+            - link "Transfer Funds" [ref=e37] [cursor=pointer]:
+              - /url: transfer.htm
+          - listitem [ref=e38]:
+            - link "Bill Pay" [ref=e39] [cursor=pointer]:
+              - /url: billpay.htm
+          - listitem [ref=e40]:
+            - link "Find Transactions" [ref=e41] [cursor=pointer]:
+              - /url: findtrans.htm
+          - listitem [ref=e42]:
+            - link "Update Contact Info" [ref=e43] [cursor=pointer]:
+              - /url: updateprofile.htm
+          - listitem [ref=e44]:
+            - link "Request Loan" [ref=e45] [cursor=pointer]:
+              - /url: requestloan.htm
+          - listitem [ref=e46]:
+            - link "Log Out" [ref=e47] [cursor=pointer]:
+              - /url: logout.htm
+      - generic [ref=e50]:
+        - heading "Transfer Funds" [level=1] [ref=e51]
+        - generic [ref=e52]:
+          - paragraph [ref=e53]:
+            - text: "Amount: $"
+            - textbox [ref=e54]: "0"
+          - generic [ref=e55]:
+            - text: "From account #"
+            - combobox [ref=e56]:
+              - option "31992" [selected]
+              - option "32103"
+            - text: "to account #"
+            - combobox [ref=e57]:
+              - option "31992"
+              - option "32103" [selected]
+          - button "Transfer" [active] [ref=e59] [cursor=pointer]
+  - generic [ref=e61]:
+    - list [ref=e62]:
+      - listitem [ref=e63]:
+        - link "Home" [ref=e64] [cursor=pointer]:
+          - /url: index.htm
+        - text: "|"
+      - listitem [ref=e65]:
+        - link "About Us" [ref=e66] [cursor=pointer]:
+          - /url: about.htm
+        - text: "|"
+      - listitem [ref=e67]:
+        - link "Services" [ref=e68] [cursor=pointer]:
+          - /url: services.htm
+        - text: "|"
+      - listitem [ref=e69]:
+        - link "Products" [ref=e70] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/products.jsp
+        - text: "|"
+      - listitem [ref=e71]:
+        - link "Locations" [ref=e72] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - text: "|"
+      - listitem [ref=e73]:
+        - link "Forum" [ref=e74] [cursor=pointer]:
+          - /url: http://forums.parasoft.com/
+        - text: "|"
+      - listitem [ref=e75]:
+        - link "Site Map" [ref=e76] [cursor=pointer]:
+          - /url: sitemap.htm
+        - text: "|"
+      - listitem [ref=e77]:
+        - link "Contact Us" [ref=e78] [cursor=pointer]:
+          - /url: contact.htm
+    - paragraph [ref=e79]: © Parasoft. All rights reserved.
+    - list [ref=e80]:
+      - listitem [ref=e81]: "Visit us at:"
+      - listitem [ref=e82]:
+        - link "www.parasoft.com" [ref=e83] [cursor=pointer]:
+          - /url: http://www.parasoft.com/
+```
+
+# Test source
+
+```ts
+  1   | import { test, expect } from '../../fixtures/api-fixture';
+  2   | import uiData from '../../test-data/ui-transfer.data.json';
+  3   | import { TransferLocators } from '../../locators/transfer.locator';
+  4   | import { Logger } from '../../utils/logger';
+  5   | 
+  6   | interface UiTestData {
+  7   |   testCaseId: string;
+  8   |   scenario: string;
+  9   |   amount: string;
+  10  |   isDefect: boolean;
+  11  |   defectId?: string;
+  12  |   isSameAccount?: boolean;
+  13  |   tags: string[];
+  14  | }
+  15  | 
+  16  | /** Pull a test case row from the JSON data file by ID. */
+  17  | const dataFor = (id: string): UiTestData => {
+  18  |   const row = (uiData as UiTestData[]).find(d => d.testCaseId === id);
+  19  |   if (!row) throw new Error(`Test data row not found for ${id}`);
+  20  |   return row;
+  21  | };
+  22  | 
+  23  | test.describe('UI Transfer Validations @ui', () => {
+  24  | 
+  25  |   test('TC-UI-01: Successful fund transfer between own accounts @smoke @FR-05',
+  26  |     async ({ transferPage, activeUser }) => {
+  27  |     const data = dataFor('TC-UI-01');
+  28  |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  29  |     test.info().annotations.push({ type: 'Requirement', description: 'FR-05' });
+  30  | 
+  31  |     await transferPage.navigate();
+  32  |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  33  |     await transferPage.verifySuccess(data.amount, activeUser.account1, activeUser.account2);
+  34  |   });
+  35  | 
+  36  |   test('TC-UI-02: Confirmation displays formatted amount and account numbers @smoke @FR-08',
+  37  |     async ({ transferPage, activeUser }) => {
+  38  |     const data = dataFor('TC-UI-02');
+  39  |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  40  |     test.info().annotations.push({ type: 'Requirement', description: 'FR-08' });
+  41  | 
+  42  |     await transferPage.navigate();
+  43  |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  44  |     await transferPage.verifySuccess(data.amount, activeUser.account1, activeUser.account2);
+  45  | 
+  46  |     const confirmationText = await transferPage.getConfirmationText();
+  47  |     const formattedAmount = parseFloat(data.amount).toFixed(2);
+  48  | 
+  49  |     expect(confirmationText, 'FR-08: Should contain formatted amount').toContain(`$${formattedAmount}`);
+  50  |     expect(confirmationText, 'FR-08: Should reference source account').toContain(activeUser.account1);
+  51  |     expect(confirmationText, 'FR-08: Should reference target account').toContain(activeUser.account2);
+  52  |   });
+  53  | 
+  54  |   
+  55  |   test('TC-UI-03: Minimum boundary transfer ($0.01) succeeds via UI @regression @FR-05',
+  56  |     async ({ transferPage, activeUser }) => {
+  57  |     const data = dataFor('TC-UI-03');
+  58  |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  59  |     test.info().annotations.push({ type: 'Requirement', description: 'FR-05' });
+  60  | 
+  61  |     await transferPage.navigate();
+  62  |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  63  |     await transferPage.verifySuccess(data.amount, activeUser.account1, activeUser.account2);
+  64  |   });
+  65  | 
+  66  |   test('TC-UI-04-A: Empty amount should be rejected by UI @defects @FR-09',
+  67  |     async ({ transferPage, activeUser, page }) => {
+  68  |     const data = dataFor('TC-UI-04-A');
+  69  |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  70  |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  71  |     test.info().annotations.push({ type: 'Known Bug', description: data.defectId! });
+  72  | 
+  73  |     await transferPage.navigate();
+  74  |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  75  | 
+  76  |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  77  |       .isVisible({ timeout: 5000 }).catch(() => false);
+  78  | 
+  79  |     expect.soft(successVisible,
+  80  |       `${data.defectId} active: UI Rejected empty amount and rendered a error page.`
+  81  |     ).toBeFalsy();
+  82  |   });
+  83  | 
+  84  |   test('TC-UI-04-B: Zero amount transfer accepted by UI (DEF-002) @defects @FR-09',
+  85  |     async ({ transferPage, activeUser, page }) => {
+  86  |     const data = dataFor('TC-UI-04-B');
+  87  |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  88  |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  89  |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-002' });
+  90  | 
+  91  |     await transferPage.navigate();
+  92  |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  93  | 
+  94  |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  95  |       .isVisible({ timeout: 5000 }).catch(() => false);
+  96  | 
+  97  |     expect.soft(successVisible,
+  98  |       `DEF-002 active: UI accepted $0 transfer and rendered success page.`
+> 99  |     ).toBeTruthy();
+      |       ^ Error: DEF-002 active: UI accepted $0 transfer and rendered success page.
+  100 |   });
+  101 | 
+  102 |   test('TC-UI-04-C: Negative amount transfer accepted by UI (DEF-003) @defects @FR-09',
+  103 |     async ({ transferPage, activeUser, page }) => {
+  104 |     const data = dataFor('TC-UI-04-C');
+  105 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  106 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  107 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-003' });
+  108 | 
+  109 |     await transferPage.navigate();
+  110 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  111 | 
+  112 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  113 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  114 | 
+  115 |     expect.soft(successVisible,
+  116 |       `DEF-003 active: UI accepted negative amount "${data.amount}" and rendered success page.`
+  117 |     ).toBeTruthy();
+  118 |   });
+  119 | 
+  120 |   test('TC-UI-05-A: Non-numeric "50#" partially accepted by UI (DEF-005) @defects @FR-09',
+  121 |     async ({ transferPage, activeUser, page }) => {
+  122 |     const data = dataFor('TC-UI-05-A');
+  123 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  124 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  125 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-005' });
+  126 | 
+  127 |     await transferPage.navigate();
+  128 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  129 | 
+  130 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  131 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  132 | 
+  133 |     expect.soft(successVisible,
+  134 |       `DEF-005 active: UI accepted "${data.amount}" (parsed as 50, dropping "#").`
+  135 |     ).toBeTruthy();
+  136 |   });
+  137 | 
+  138 |   test('TC-UI-05-B: Non-numeric "abc" should be rejected by UI @defects @FR-09',
+  139 |     async ({ transferPage, activeUser, page }) => {
+  140 |     const data = dataFor('TC-UI-05-B');
+  141 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  142 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  143 |     test.info().annotations.push({ type: 'Known Bug', description: data.defectId! });
+  144 | 
+  145 |     await transferPage.navigate();
+  146 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  147 | 
+  148 |     
+  149 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  150 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  151 | 
+  152 |     expect.soft(successVisible,
+  153 |       `${data.defectId}: ParaBank's handling of "abc" — success page rendered = ${successVisible}.`
+  154 |     ).toBeFalsy();
+  155 |   });
+  156 | 
+  157 | 
+  158 |   test('TC-UI-06: Insufficient funds — overdraft incorrectly allowed (DEF-004) @defects @FR-09',
+  159 |     async ({ transferPage, activeUser, page }) => {
+  160 |     const data = dataFor('TC-UI-06');
+  161 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  162 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  163 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-004' });
+  164 | 
+  165 |     await transferPage.navigate();
+  166 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account2);
+  167 | 
+  168 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  169 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  170 | 
+  171 |     expect.soft(successVisible,
+  172 |       `DEF-004 active: UI accepted $${data.amount} transfer with insufficient funds.`
+  173 |     ).toBeTruthy();
+  174 |   });
+  175 | 
+  176 |   
+  177 |   test('TC-UI-07: Same source and destination account allowed (DEF-001) @defects @FR-09',
+  178 |     async ({ transferPage, activeUser, page }) => {
+  179 |     const data = dataFor('TC-UI-07');
+  180 |     test.info().annotations.push({ type: 'Test Type', description: 'UI' });
+  181 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-09' });
+  182 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-001' });
+  183 | 
+  184 |     await transferPage.navigate();
+  185 |     await transferPage.performTransfer(data.amount, activeUser.account1, activeUser.account1);
+  186 | 
+  187 |     const successVisible = await page.locator(TransferLocators.successMessageBody)
+  188 |       .isVisible({ timeout: 5000 }).catch(() => false);
+  189 | 
+  190 |     expect.soft(successVisible,
+  191 |       `DEF-001 active: UI accepted transfer from #${activeUser.account1} to itself.`
+  192 |     ).toBeTruthy();
+  193 |   });
+  194 | 
+  195 |   test('TC-UI-08: Rapid clicks cause multiple debits despite single confirmation (DEF-006) @defects @FR-05 @FR-07',
+  196 |     async ({ transferPage, accountOverviewPage, activeUser, page }) => {
+  197 |     test.info().annotations.push({ type: 'Test Type', description: 'UI (Rapid-Click)' });
+  198 |     test.info().annotations.push({ type: 'Requirement', description: 'FR-05, FR-07' });
+  199 |     test.info().annotations.push({ type: 'Known Bug', description: 'DEF-006' });
+```

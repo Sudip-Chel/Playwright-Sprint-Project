@@ -1,0 +1,155 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e\transfer.e2e.spec.ts >> E2E Hybrid Transfer Validations @e2e >> TC-E2E-07: Invalid amounts cause balance drift (DEF-002+003+005) @defects @FR-09
+- Location: tests\e2e\transfer.e2e.spec.ts:210:7
+
+# Error details
+
+```
+TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator('#fromAccountId option').first()
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - heading "Error 1015" [level=1] [ref=e5]
+    - generic [ref=e6]: "Ray ID: 9fe1e39e9d0f79e4 •"
+    - generic [ref=e7]: 2026-05-19 08:56:34 UTC
+    - heading "You are being rate limited" [level=2] [ref=e8]
+  - generic [ref=e10]:
+    - heading "What happened?" [level=2] [ref=e11]
+    - paragraph [ref=e12]: The owner of this website (parabank.parasoft.com) has banned you temporarily from accessing this website.
+    - paragraph [ref=e13]:
+      - text: Please see
+      - link "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1015/" [ref=e14]:
+        - /url: https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1015/
+      - text: for more details.
+  - generic [ref=e16]:
+    - text: Was this page helpful?
+    - button "Yes" [ref=e17] [cursor=pointer]
+    - button "No" [ref=e18] [cursor=pointer]
+  - paragraph [ref=e20]:
+    - generic [ref=e21]:
+      - text: "Cloudflare Ray ID:"
+      - strong [ref=e22]: 9fe1e39e9d0f79e4
+    - text: •
+    - generic [ref=e23]:
+      - text: "Your IP:"
+      - button "Click to reveal" [ref=e24] [cursor=pointer]
+      - text: •
+    - generic [ref=e25]:
+      - text: Performance & security by
+      - link "Cloudflare" [ref=e26]:
+        - /url: https://www.cloudflare.com/5xx-error-landing
+```
+
+# Test source
+
+```ts
+  1  | import { Page, expect } from '@playwright/test';
+  2  | import { TransferLocators } from '../locators/transfer.locator';
+  3  | import { Logger } from '../utils/logger';
+  4  | 
+  5  | export class TransferFundsPage {
+  6  |   constructor(public readonly page: Page) {}
+  7  | 
+  8  |   async navigate(): Promise<void> {
+  9  |     Logger.info('TransferFundsPage: Navigating to /parabank/transfer.htm');
+  10 | 
+  11 |     const accountsResponsePromise = this.page.waitForResponse(
+  12 |       res => /\/services_proxy\/bank\/customers\/\d+\/accounts/.test(res.url())
+  13 |              && res.status() === 200,
+  14 |       { timeout: 15000 }
+  15 |     ).catch(() => null);
+  16 | 
+  17 |     await this.page.goto('/parabank/transfer.htm', { waitUntil: 'domcontentloaded' });
+  18 |     await accountsResponsePromise;
+  19 | 
+  20 |     await this.page.locator(`${TransferLocators.fromAccountIdSelect} option`)
+> 21 |       .first().waitFor({ state: 'attached', timeout: 10000 });
+     |                ^ TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+  22 |   }
+  23 | 
+  24 |   async performTransfer(amount: string, fromAcc: string, toAcc: string): Promise<void> {
+  25 |     Logger.info(`TransferFundsPage: Transferring $${amount}: #${fromAcc} -> #${toAcc}`);
+  26 | 
+  27 |     await this.fillTransferForm(amount, fromAcc, toAcc);
+  28 | 
+  29 |     const transferResponse = this.page.waitForResponse(
+  30 |       res => res.url().includes('/transfer') && res.request().method() === 'POST',
+  31 |       { timeout: 15_000 }
+  32 |     ).catch(() => null);
+  33 | 
+  34 |     await this.page.locator(TransferLocators.transferButton).click();
+  35 |     await transferResponse;
+  36 |   }
+  37 | 
+  38 |   async fillTransferForm(amount: string, fromAcc: string, toAcc: string): Promise<void> {
+  39 |     await this.page.locator(TransferLocators.amountInput).fill(amount);
+  40 | 
+  41 |     await this.page.locator(TransferLocators.fromAccountIdSelect)
+  42 |       .waitFor({ state: 'attached' });
+  43 |     await this.page.locator(TransferLocators.toAccountIdSelect)
+  44 |       .waitFor({ state: 'attached' });
+  45 | 
+  46 |     await this.page.selectOption(TransferLocators.fromAccountIdSelect, fromAcc);
+  47 |     await this.page.selectOption(TransferLocators.toAccountIdSelect, toAcc);
+  48 |   }
+  49 | 
+  50 | 
+  51 |   async verifySuccess(amount: string, fromAcc: string, toAcc: string): Promise<void> {
+  52 |     const formattedAmount = parseFloat(amount).toFixed(2);
+  53 | 
+  54 |     await this.page.locator(TransferLocators.successMessageTitle)
+  55 |       .waitFor({ state: 'visible', timeout: 10000 });
+  56 | 
+  57 |     await expect(
+  58 |       this.page.locator(TransferLocators.successMessageTitle),
+  59 |       'FR-08: Page title should read "Transfer Complete!"'
+  60 |     ).toHaveText('Transfer Complete!');
+  61 | 
+  62 |     await expect(
+  63 |       this.page.locator(TransferLocators.successMessageBody),
+  64 |       'FR-08: Confirmation body should include amount and both account numbers'
+  65 |     ).toContainText(
+  66 |       `$${formattedAmount} has been transferred from account #${fromAcc} to account #${toAcc}.`
+  67 |     );
+  68 |   }
+  69 | 
+  70 |   async getConfirmationText(): Promise<string> {
+  71 |     await this.page.locator(TransferLocators.successMessageBody)
+  72 |       .waitFor({ state: 'visible' });
+  73 |     return await this.page.locator(TransferLocators.successMessageBody).innerText();
+  74 |   }
+  75 | 
+  76 | 
+  77 |   async rapidClickTransfer(clickCount: number = 4): Promise<void> {
+  78 |     Logger.info(`TransferFundsPage: Firing ${clickCount} rapid clicks on Transfer button`);
+  79 | 
+  80 |     const button = this.page.locator(TransferLocators.transferButton);
+  81 |     await button.waitFor({ state: 'visible' });
+  82 | 
+  83 |     const clickPromises: Promise<void>[] = [];
+  84 |     for (let i = 0; i < clickCount; i++) {
+  85 |       clickPromises.push(
+  86 |         button.dispatchEvent('click').catch(e => {
+  87 |           Logger.warn(`TransferFundsPage: rapid click ${i + 1} failed: ${e.message}`);
+  88 |           return undefined;
+  89 |         })
+  90 |       );
+  91 |     }
+  92 |     await Promise.all(clickPromises);
+  93 |   }
+  94 | }
+```

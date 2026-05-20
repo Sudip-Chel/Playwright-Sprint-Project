@@ -1,0 +1,18 @@
+2026-05-19 02:39:53 [info]: Fixture: staggered start delay = 320 ms
+2026-05-19 02:39:54 [info]: Fixture: starting UI registration for username=qa_1779138594037
+2026-05-19 02:39:54 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 02:39:54 [info]: RegisterPage: Submitting registration for username=qa_1779138594037
+2026-05-19 02:39:54 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 02:39:54 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 02:39:54 [info]: AccountOverviewPage: Primary account captured: #301944
+2026-05-19 02:39:54 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 02:39:55 [info]: OpenAccountPage: Opening Savings account funded from #301944
+2026-05-19 02:39:55 [info]: OpenAccountPage: New account created: #302055
+2026-05-19 02:39:55 [info]: Fixture COMPLETE: user=qa_1779138594037 account1=301944 account2=302055
+{"level":"info","message":{"accountId":"301944","balance":415.5,"op":"getBalance"},"timestamp":"2026-05-18T21:09:55.346Z"}
+{"level":"info","message":{"accountId":"302055","balance":100,"op":"getBalance"},"timestamp":"2026-05-18T21:09:55.363Z"}
+2026-05-19 02:39:55 [info]: TC-API-02: pre-balance source=$415.5 target=$100
+{"level":"info","message":{"amount":"100","from":"301944","ok":true,"op":"transfer","status":200,"to":"302055"},"timestamp":"2026-05-18T21:09:55.412Z"}
+{"level":"info","message":{"accountId":"301944","balance":315.5,"op":"getBalance"},"timestamp":"2026-05-18T21:09:55.426Z"}
+{"level":"info","message":{"accountId":"302055","balance":200,"op":"getBalance"},"timestamp":"2026-05-18T21:09:55.457Z"}
+2026-05-19 02:39:55 [info]: TC-API-02: post-balance source=$315.5 target=$200

@@ -15,7 +15,7 @@ export async function captureScreenshot(
   }
 
   try {
-    const screenshot = await page.screenshot({ fullPage: true, timeout: 5_000 });
+    const screenshot = await page.screenshot({ fullPage: true, timeout: 5000 });
 
     await testInfo.attach(`${testInfo.title}_${label}`, {
       body: screenshot,

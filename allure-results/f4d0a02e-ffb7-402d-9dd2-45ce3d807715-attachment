@@ -1,0 +1,216 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ui\transfer.ui.spec.ts >> UI Transfer Validations @ui >> TC-UI-07: Same source and destination account allowed (DEF-001) @defects @FR-09
+- Location: tests\ui\transfer.ui.spec.ts:177:7
+
+# Error details
+
+```
+TimeoutError: locator.click: Timeout 20000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'Accounts Overview' })
+    - locator resolved to <a href="overview.htm">Accounts Overview</a>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+    - performing click action
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - link:
+        - /url: admin.htm
+        - img [ref=e4] [cursor=pointer]
+      - link "ParaBank":
+        - /url: index.htm
+        - img "ParaBank" [ref=e5] [cursor=pointer]
+      - paragraph [ref=e6]: Experience the difference
+    - generic [ref=e7]:
+      - list [ref=e8]:
+        - listitem [ref=e9]: Solutions
+        - listitem [ref=e10]:
+          - link "About Us" [ref=e11] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e12]:
+          - link "Services" [ref=e13] [cursor=pointer]:
+            - /url: services.htm
+        - listitem [ref=e14]:
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/products.jsp
+        - listitem [ref=e16]:
+          - link "Locations" [ref=e17] [cursor=pointer]:
+            - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - listitem [ref=e18]:
+          - link "Admin Page" [ref=e19] [cursor=pointer]:
+            - /url: admin.htm
+      - list [ref=e20]:
+        - listitem [ref=e21]:
+          - link "home" [ref=e22] [cursor=pointer]:
+            - /url: index.htm
+        - listitem [ref=e23]:
+          - link "about" [ref=e24] [cursor=pointer]:
+            - /url: about.htm
+        - listitem [ref=e25]:
+          - link "contact" [ref=e26] [cursor=pointer]:
+            - /url: contact.htm
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - paragraph [ref=e29]: Welcome Sudip Chel
+        - heading "Account Services" [level=2] [ref=e30]
+        - list [ref=e31]:
+          - listitem [ref=e32]:
+            - link "Open New Account" [ref=e33] [cursor=pointer]:
+              - /url: openaccount.htm
+          - listitem [ref=e34]:
+            - link "Accounts Overview" [active] [ref=e35] [cursor=pointer]:
+              - /url: overview.htm
+          - listitem [ref=e36]:
+            - link "Transfer Funds" [ref=e37] [cursor=pointer]:
+              - /url: transfer.htm
+          - listitem [ref=e38]:
+            - link "Bill Pay" [ref=e39] [cursor=pointer]:
+              - /url: billpay.htm
+          - listitem [ref=e40]:
+            - link "Find Transactions" [ref=e41] [cursor=pointer]:
+              - /url: findtrans.htm
+          - listitem [ref=e42]:
+            - link "Update Contact Info" [ref=e43] [cursor=pointer]:
+              - /url: updateprofile.htm
+          - listitem [ref=e44]:
+            - link "Request Loan" [ref=e45] [cursor=pointer]:
+              - /url: requestloan.htm
+          - listitem [ref=e46]:
+            - link "Log Out" [ref=e47] [cursor=pointer]:
+              - /url: logout.htm
+      - generic [ref=e48]:
+        - heading "Welcome qa_1779185451940" [level=1] [ref=e49]
+        - paragraph [ref=e50]: Your account was created successfully. You are now logged in.
+  - generic [ref=e52]:
+    - list [ref=e53]:
+      - listitem [ref=e54]:
+        - link "Home" [ref=e55] [cursor=pointer]:
+          - /url: index.htm
+        - text: "|"
+      - listitem [ref=e56]:
+        - link "About Us" [ref=e57] [cursor=pointer]:
+          - /url: about.htm
+        - text: "|"
+      - listitem [ref=e58]:
+        - link "Services" [ref=e59] [cursor=pointer]:
+          - /url: services.htm
+        - text: "|"
+      - listitem [ref=e60]:
+        - link "Products" [ref=e61] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/products.jsp
+        - text: "|"
+      - listitem [ref=e62]:
+        - link "Locations" [ref=e63] [cursor=pointer]:
+          - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - text: "|"
+      - listitem [ref=e64]:
+        - link "Forum" [ref=e65] [cursor=pointer]:
+          - /url: http://forums.parasoft.com/
+        - text: "|"
+      - listitem [ref=e66]:
+        - link "Site Map" [ref=e67] [cursor=pointer]:
+          - /url: sitemap.htm
+        - text: "|"
+      - listitem [ref=e68]:
+        - link "Contact Us" [ref=e69] [cursor=pointer]:
+          - /url: contact.htm
+    - paragraph [ref=e70]: © Parasoft. All rights reserved.
+    - list [ref=e71]:
+      - listitem [ref=e72]: "Visit us at:"
+      - listitem [ref=e73]:
+        - link "www.parasoft.com" [ref=e74] [cursor=pointer]:
+          - /url: http://www.parasoft.com/
+```
+
+# Test source
+
+```ts
+  1  | import { Page, expect } from '@playwright/test';
+  2  | import { Logger } from '../utils/logger';
+  3  | import { OverviewLocators } from '../locators/overview.locator';
+  4  | 
+  5  | export class AccountOverviewPage {
+  6  |   constructor(public readonly page: Page) {}
+  7  | 
+  8  | 
+  9  |   async navigate(): Promise<void> {
+  10 |     Logger.info('AccountOverviewPage: Clicking "Accounts Overview" nav link');
+> 11 |     await this.page.getByRole('link', { name: 'Accounts Overview' }).click();
+     |                                                                      ^ TimeoutError: locator.click: Timeout 20000ms exceeded.
+  12 |     await expect(this.page).toHaveURL(/.*overview\.htm.*/, { timeout: 10000 });
+  13 |     await this.page.locator(OverviewLocators.accountLink).first().waitFor({ state: 'visible', timeout: 20000 });
+  14 |   }
+  15 | 
+  16 |   async getPrimaryAccountId(): Promise<string> {
+  17 |     const firstAccountLink = this.page.locator(OverviewLocators.accountLink).first();
+  18 |     await firstAccountLink.waitFor({ state: 'visible', timeout: 10000 });
+  19 |     const accountId = (await firstAccountLink.innerText()).trim();
+  20 |     Logger.info(`AccountOverviewPage: Primary account captured: #${accountId}`);
+  21 |     return accountId;
+  22 |   }
+  23 | 
+  24 |   async getAllAccountIds(): Promise<string[]> {
+  25 |     const links = this.page.locator(OverviewLocators.accountLink);
+  26 |     await links.first().waitFor({ state: 'visible', timeout: 10000 });
+  27 |     const ids = await links.allInnerTexts();
+  28 |     return ids.map(s => s.trim());
+  29 |   }
+  30 | 
+  31 |   
+  32 |   async getBalanceForAccount(accountId: string): Promise<number> {
+  33 |     const row = this.page.locator(OverviewLocators.accountRows).filter({has: this.page.locator(`a:text-is("${accountId}")`)});
+  34 |     await row.first().waitFor({ state: 'visible', timeout: 10000 });
+  35 | 
+  36 |     const balanceText = await row.first().locator('td').nth(1).innerText();
+  37 |     const numeric = parseFloat(balanceText.replace(/[$,\s]/g, ''));
+  38 | 
+  39 |     if (isNaN(numeric)) {
+  40 |       throw new Error(
+  41 |         `AccountOverviewPage: Could not parse balance "${balanceText}" for #${accountId}`
+  42 |       );
+  43 |     }
+  44 |     Logger.info(`AccountOverviewPage: UI balance #${accountId} = $${numeric.toFixed(2)}`);
+  45 |     return numeric;
+  46 |   }
+  47 | 
+  48 | 
+  49 |   async getAllBalances(): Promise<Map<string, number>> {
+  50 |     const rows = this.page.locator(OverviewLocators.accountRows);
+  51 |     await rows.first().waitFor({ state: 'visible' });
+  52 |     const count = await rows.count();
+  53 |     const result = new Map<string, number>();
+  54 | 
+  55 |     for (let i = 0; i < count; i++) {
+  56 |       const row = rows.nth(i);
+  57 |       const link = row.locator('td a').first();
+  58 |       if (await link.count() === 0) continue;
+  59 | 
+  60 |       const accountId = (await link.innerText()).trim();
+  61 |       const balanceText = await row.locator('td').nth(1).innerText();
+  62 |       const balance = parseFloat(balanceText.replace(/[$,\s]/g, ''));
+  63 |       if (!isNaN(balance)) result.set(accountId, balance);
+  64 |     }
+  65 |     return result;
+  66 |   }
+  67 | }
+  68 | 
+  69 | 
+  70 | 
+```

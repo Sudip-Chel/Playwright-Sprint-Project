@@ -1,0 +1,277 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e\transfer.e2e.spec.ts >> E2E Hybrid Transfer Validations @e2e >> TC-E2E-02: UI confirmation text matches API success response @regression @FR-08
+- Location: tests\e2e\transfer.e2e.spec.ts:63:7
+
+# Error details
+
+```
+TimeoutError: locator.click: Timeout 20000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Register' })
+    - locator resolved to <input type="submit" class="button" value="Register"/>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - element is outside of the viewport
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - element is outside of the viewport
+    - retrying click action
+      - waiting 100ms
+    28 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - element is outside of the viewport
+     - retrying click action
+       - waiting 500ms
+
+```
+
+# Page snapshot
+
+```yaml
+- generic:
+  - generic [ref=e1]:
+    - generic [ref=e2]:
+      - link:
+        - /url: admin.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - img [ref=e3]
+      - link "ParaBank":
+        - /url: index.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - img "ParaBank" [ref=e4]
+      - paragraph [ref=e5]: Experience the difference
+    - generic [ref=e6]:
+      - list [ref=e7]:
+        - listitem [ref=e8]: Solutions
+        - listitem [ref=e9]:
+          - link "About Us" [ref=e10]:
+            - /url: about.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - listitem [ref=e11]:
+          - link "Services" [ref=e12]:
+            - /url: services.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - listitem [ref=e13]:
+          - link "Products" [ref=e14]:
+            - /url: http://www.parasoft.com/jsp/products.jsp
+        - listitem [ref=e15]:
+          - link "Locations" [ref=e16]:
+            - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - listitem [ref=e17]:
+          - link "Admin Page" [ref=e18]:
+            - /url: admin.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+      - list [ref=e19]:
+        - listitem [ref=e20]:
+          - link "home" [ref=e21]:
+            - /url: index.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - listitem [ref=e22]:
+          - link "about" [ref=e23]:
+            - /url: about.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - listitem [ref=e24]:
+          - link "contact" [ref=e25]:
+            - /url: contact.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - heading "Customer Login" [level=2] [ref=e28]
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - paragraph [ref=e31]: Username
+            - textbox [ref=e33]
+            - paragraph [ref=e34]: Password
+            - textbox [ref=e36]
+            - button "Log In" [ref=e38] [cursor=pointer]
+          - paragraph [ref=e39]:
+            - link "Forgot login info?" [ref=e40]:
+              - /url: lookup.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+          - paragraph [ref=e41]:
+            - link "Register" [ref=e42]:
+              - /url: register.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+      - generic [ref=e43]:
+        - heading "Signing up is easy!" [level=1] [ref=e44]
+        - paragraph [ref=e45]: If you have an account with us you can sign-up for free instant online access. You will have to provide some personal information.
+        - table [ref=e47]:
+          - rowgroup [ref=e48]:
+            - 'row "First Name: Sudip" [ref=e49]':
+              - cell "First Name:" [ref=e50]
+              - cell "Sudip" [ref=e51]:
+                - textbox [ref=e52]: Sudip
+              - cell [ref=e53]
+            - 'row "Last Name: Chel" [ref=e54]':
+              - cell "Last Name:" [ref=e55]
+              - cell "Chel" [ref=e56]:
+                - textbox [ref=e57]: Chel
+              - cell [ref=e58]
+            - 'row "Address: Haldia Street 123" [ref=e59]':
+              - cell "Address:" [ref=e60]
+              - cell "Haldia Street 123" [ref=e61]:
+                - textbox [ref=e62]: Haldia Street 123
+              - cell [ref=e63]
+            - 'row "City: Haldia" [ref=e64]':
+              - cell "City:" [ref=e65]
+              - cell "Haldia" [ref=e66]:
+                - textbox [ref=e67]: Haldia
+              - cell [ref=e68]
+            - 'row "State: West Bengal" [ref=e69]':
+              - cell "State:" [ref=e70]
+              - cell "West Bengal" [ref=e71]:
+                - textbox [ref=e72]: West Bengal
+              - cell [ref=e73]
+            - 'row "Zip Code: 722140" [ref=e74]':
+              - cell "Zip Code:" [ref=e75]
+              - cell "722140" [ref=e76]:
+                - textbox [ref=e77]: "722140"
+              - cell [ref=e78]
+            - 'row "Phone #: 9876543210" [ref=e79]':
+              - 'cell "Phone #:" [ref=e80]'
+              - cell "9876543210" [ref=e81]:
+                - textbox [ref=e82]: "9876543210"
+              - cell [ref=e83]
+            - 'row "SSN: SSN-2624" [ref=e84]':
+              - cell "SSN:" [ref=e85]
+              - cell "SSN-2624" [ref=e86]:
+                - textbox [ref=e87]: SSN-2624
+              - cell [ref=e88]
+            - row [ref=e89]:
+              - cell [ref=e90]
+            - 'row "Username: qa_1779185526845" [ref=e91]':
+              - cell "Username:" [ref=e92]
+              - cell "qa_1779185526845" [ref=e93]:
+                - textbox [ref=e94]: qa_1779185526845
+              - cell [ref=e95]
+            - 'row "Password: Password123" [ref=e96]':
+              - cell "Password:" [ref=e97]
+              - cell "Password123" [ref=e98]:
+                - textbox [ref=e99]: Password123
+              - cell [ref=e100]
+            - 'row "Confirm: Password123" [ref=e101]':
+              - cell "Confirm:" [ref=e102]
+              - cell "Password123" [ref=e103]:
+                - textbox [active] [ref=e104]: Password123
+              - cell [ref=e105]
+            - row "Register" [ref=e106]:
+              - cell [ref=e107]
+              - cell "Register" [ref=e108]:
+                - button "Register" [ref=e109] [cursor=pointer]
+  - generic [ref=e110]:
+    - list [ref=e111]:
+      - listitem [ref=e112]:
+        - link "Home" [ref=e113]:
+          - /url: index.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - text: "|"
+      - listitem [ref=e114]:
+        - link "About Us" [ref=e115]:
+          - /url: about.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - text: "|"
+      - listitem [ref=e116]:
+        - link "Services" [ref=e117]:
+          - /url: services.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - text: "|"
+      - listitem [ref=e118]:
+        - link "Products" [ref=e119]:
+          - /url: http://www.parasoft.com/jsp/products.jsp
+        - text: "|"
+      - listitem [ref=e120]:
+        - link "Locations" [ref=e121]:
+          - /url: http://www.parasoft.com/jsp/pr/contacts.jsp
+        - text: "|"
+      - listitem [ref=e122]:
+        - link "Forum" [ref=e123]:
+          - /url: http://forums.parasoft.com/
+        - text: "|"
+      - listitem [ref=e124]:
+        - link "Site Map" [ref=e125]:
+          - /url: sitemap.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+        - text: "|"
+      - listitem [ref=e126]:
+        - link "Contact Us" [ref=e127]:
+          - /url: contact.htm;jsessionid=09FD79431C29633C1A76A665F0987847
+    - paragraph [ref=e128]: © Parasoft. All rights reserved.
+    - list [ref=e129]:
+      - listitem [ref=e130]: "Visit us at:"
+      - listitem [ref=e131]:
+        - link "www.parasoft.com" [ref=e132]:
+          - /url: http://www.parasoft.com/
+```
+
+# Test source
+
+```ts
+  1  | import { Page, expect } from '@playwright/test';
+  2  | import { Logger } from '../utils/logger';
+  3  | import { RegisterLocators } from '../locators/register.locator';
+  4  | 
+  5  | export interface RegistrationData {
+  6  |   firstName?: string;
+  7  |   lastName?: string;
+  8  |   street?: string;
+  9  |   city?: string;
+  10 |   state?: string;
+  11 |   zipCode?: string;
+  12 |   phoneNumber?: string;
+  13 |   ssn?: string;
+  14 |   username: string;
+  15 |   password: string;
+  16 | }
+  17 | 
+  18 | export class RegisterPage {
+  19 |   constructor(public readonly page: Page) {}
+  20 | 
+  21 |   async navigate(): Promise<void> {
+  22 |     Logger.info('RegisterPage: Navigating to /parabank/register.htm');
+  23 |     await this.page.goto('/parabank/register.htm');
+  24 |   }
+  25 | 
+  26 |   // Fills out the registration form.
+  27 |   async registerDynamicUser(data: RegistrationData): Promise<void> {
+  28 |     const filled: Required<RegistrationData> = {
+  29 |       firstName: data.firstName ?? 'Sudip',
+  30 |       lastName: data.lastName ?? 'Chel',
+  31 |       street: data.street ?? 'Haldia Street 123',
+  32 |       city: data.city ?? 'Haldia',
+  33 |       state: data.state ?? 'West Bengal',
+  34 |       zipCode: data.zipCode ?? '722140',
+  35 |       phoneNumber: data.phoneNumber ?? '9876543210',
+  36 |       ssn: data.ssn ?? `SSN-12345789`,
+  37 |       username: data.username,
+  38 |       password: data.password
+  39 |     };
+  40 | 
+  41 |     Logger.info(`RegisterPage: Submitting registration for username=${filled.username}`);
+  42 | 
+  43 |   
+  44 |     await this.page.locator(RegisterLocators.firstNameInput).fill(filled.firstName);
+  45 |     await this.page.locator(RegisterLocators.lastNameInput).fill(filled.lastName);
+  46 |     await this.page.locator(RegisterLocators.addressInput).fill(filled.street);
+  47 |     await this.page.locator(RegisterLocators.cityInput).fill(filled.city);
+  48 |     await this.page.locator(RegisterLocators.stateInput).fill(filled.state);
+  49 |     await this.page.locator(RegisterLocators.zipCodeInput).fill(filled.zipCode);
+  50 |     await this.page.locator(RegisterLocators.phoneNumberInput).fill(filled.phoneNumber);
+  51 |     await this.page.locator(RegisterLocators.ssnInput).fill(filled.ssn);
+  52 |     await this.page.locator(RegisterLocators.usernameInput).fill(filled.username);
+  53 | 
+  54 |     await this.page.locator(RegisterLocators.passwordInput).fill(filled.password);
+  55 |     await this.page.locator(RegisterLocators.confirmPasswordInput).fill(filled.password);
+  56 | 
+> 57 |     await this.page.getByRole('button', { name: 'Register' }).click();
+     |                                                               ^ TimeoutError: locator.click: Timeout 20000ms exceeded.
+  58 |   }
+  59 | 
+  60 |   async verifyRegistrationSuccess(): Promise<void> {
+  61 |     await expect(this.page.locator('.title'), 'Registration should land on Welcome page')
+  62 |       .toContainText(/welcome/i, { timeout: 15000 });
+  63 |     Logger.info('RegisterPage: Registration successful (Welcome page detected)');
+  64 |   }
+  65 | }
+```

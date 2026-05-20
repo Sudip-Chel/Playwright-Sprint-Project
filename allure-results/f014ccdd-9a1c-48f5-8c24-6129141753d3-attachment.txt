@@ -1,0 +1,19 @@
+2026-05-19 14:21:37 [info]: Fixture: staggered start delay = 396 ms
+2026-05-19 14:21:38 [info]: Fixture: starting UI registration for username=qa_1779180698237
+2026-05-19 14:21:38 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 14:21:45 [info]: RegisterPage: Submitting registration for username=qa_1779180698237
+2026-05-19 14:21:48 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 14:21:48 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 14:21:52 [info]: AccountOverviewPage: Primary account captured: #37653
+2026-05-19 14:21:52 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 14:21:52 [info]: OpenAccountPage: Opening Savings account funded from #37653
+2026-05-19 14:21:56 [info]: OpenAccountPage: New account created: #37875
+2026-05-19 14:21:56 [info]: Fixture COMPLETE: user=qa_1779180698237 account1=37653 account2=37875
+{"level":"info","message":{"accountId":"37653","balance":5050.5,"op":"getBalance"},"timestamp":"2026-05-19T08:51:57.521Z"}
+{"level":"info","message":{"accountId":"37875","balance":100,"op":"getBalance"},"timestamp":"2026-05-19T08:51:58.175Z"}
+2026-05-19 14:21:58 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 14:21:59 [info]: TransferFundsPage: Transferring $200: #37653 -> #37875
+{"level":"info","message":{"accountId":"37653","balance":4850.5,"op":"getBalance"},"timestamp":"2026-05-19T08:52:02.063Z"}
+{"level":"info","message":{"accountId":"37875","balance":300,"op":"getBalance"},"timestamp":"2026-05-19T08:52:03.244Z"}
+{"level":"info","message":{"accountId":"37653","count":2,"op":"getTransactions"},"timestamp":"2026-05-19T08:52:05.176Z"}
+{"level":"info","message":{"accountId":"37875","count":2,"op":"getTransactions"},"timestamp":"2026-05-19T08:52:05.674Z"}

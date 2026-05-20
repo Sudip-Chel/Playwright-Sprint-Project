@@ -1,0 +1,13 @@
+2026-05-19 02:39:40 [info]: Fixture: staggered start delay = 680 ms
+2026-05-19 02:39:40 [info]: Fixture: starting UI registration for username=qa_1779138580967
+2026-05-19 02:39:40 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 02:39:41 [info]: RegisterPage: Submitting registration for username=qa_1779138580967
+2026-05-19 02:39:41 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 02:39:41 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 02:39:41 [info]: AccountOverviewPage: Primary account captured: #301278
+2026-05-19 02:39:41 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 02:39:41 [info]: OpenAccountPage: Opening Savings account funded from #301278
+2026-05-19 02:39:42 [info]: OpenAccountPage: New account created: #301389
+2026-05-19 02:39:42 [info]: Fixture COMPLETE: user=qa_1779138580967 account1=301278 account2=301389
+{"level":"info","message":{"amount":"999999","from":"301278","ok":true,"op":"transfer","status":200,"to":"301389"},"timestamp":"2026-05-18T21:09:42.204Z"}
+2026-05-19 02:39:42 [info]: TC-API-04: POST /transfer($999999) → HTTP 200

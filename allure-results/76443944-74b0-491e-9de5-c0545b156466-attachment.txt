@@ -1,0 +1,19 @@
+2026-05-19 14:26:11 [info]: Fixture: staggered start delay = 322 ms
+2026-05-19 14:26:11 [info]: Fixture: starting UI registration for username=qa_1779180971930
+2026-05-19 14:26:11 [info]: RegisterPage: Navigating to /parabank/register.htm
+2026-05-19 14:26:17 [info]: RegisterPage: Submitting registration for username=qa_1779180971930
+2026-05-19 14:26:21 [info]: RegisterPage: Registration successful (Welcome page detected)
+2026-05-19 14:26:21 [info]: AccountOverviewPage: Clicking "Accounts Overview" nav link
+2026-05-19 14:26:24 [info]: AccountOverviewPage: Primary account captured: #43092
+2026-05-19 14:26:24 [info]: OpenAccountPage: Navigating to /parabank/openaccount.htm
+2026-05-19 14:26:25 [info]: OpenAccountPage: Opening Savings account funded from #43092
+2026-05-19 14:26:27 [info]: OpenAccountPage: New account created: #43203
+2026-05-19 14:26:27 [info]: Fixture COMPLETE: user=qa_1779180971930 account1=43092 account2=43203
+{"level":"info","message":{"accountId":"43092","balance":5050.5,"op":"getBalance"},"timestamp":"2026-05-19T08:56:28.587Z"}
+{"level":"info","message":{"accountId":"43203","balance":100,"op":"getBalance"},"timestamp":"2026-05-19T08:56:29.467Z"}
+2026-05-19 14:26:29 [info]: TC-E2E-07: pre source=$5050.5 target=$100
+2026-05-19 14:26:29 [info]: TC-E2E-07: attempting invalid amount "0"
+2026-05-19 14:26:29 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm
+2026-05-19 14:26:31 [info]: TransferFundsPage: Transferring $0: #43092 -> #43203
+2026-05-19 14:26:34 [info]: TC-E2E-07: attempting invalid amount "-50"
+2026-05-19 14:26:34 [info]: TransferFundsPage: Navigating to /parabank/transfer.htm

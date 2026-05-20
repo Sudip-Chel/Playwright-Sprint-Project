@@ -55,8 +55,7 @@ export const test = base.extend<TestFixtures>({
 
 
   activeUser: async (
-    { registerPage, openAccountPage, accountOverviewPage },
-    use
+    { registerPage, openAccountPage, accountOverviewPage },use
   ) => {
     await staggeredStart();
 
